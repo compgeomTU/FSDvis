@@ -1,4 +1,4 @@
-# python3 FreeSpaceCell.py
+# python3 Cell.py
 
 from math import sqrt
 
