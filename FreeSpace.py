@@ -1,3 +1,6 @@
+# Author: Dr. Carola Wenk - Tulane University
+# Contributor: Emily Powers - Tulane University
+
 import math
 
 #easier to rewrite calfreespace than to worry about the import since it's in C
@@ -11,9 +14,9 @@ def calfreespace(x1, y1, x2, y2, xa, ya, Epsilon):
     print("divisor =", divisor, "x1 =", x1, "x2 =", x2, "y1 =", y1, "y2 =", y2)
   b = (xa-x1) * xdiff + (ya-y1) * ydiff
   q = (x1 * x1 + y1 * y1 + xa * xa + ya * ya - 2 * x1 * xa - 2 * y1 * ya - Epsilon * Epsilon) * divisor
-  root = b * b - q 
+  root = b * b - q
   if root < 0:
-    start=end=-1 
+    start=end=-1
     return (start, end)
   root = math.sqrt(root)
   t2 = (b + root) / divisor

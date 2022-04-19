@@ -1,13 +1,11 @@
-# Authors: Erfan Hosseini Sereshgi - Tulane University
-#          Will Rodman - Tulane University
+# Author: Erfan Hosseini Sereshgi - Tulane University
 
 from geojson import LineString, Feature, FeatureCollection
 import matplotlib.pyplot as plt
 import geojson
 
-
 class Graph:
-    def __init__(self, filename=None):
+    def __init__(self, verticefile=None, edgefile=None):
         self.nodes = {}  # id -> [lon,lat]
         self.edges = {}  # id -> [n1, n2]
         self.nodeLink = {}   # id -> list of next nodes
@@ -20,14 +18,14 @@ class Graph:
         self.edgeInt = {}
         self.deletedNodes = {}
         self.breadcrumbs = {}  # id -> [[lon,lat],[lon,lat], ...]
-        if filename is not None:
-            with open(filename+"_vertices.txt", 'r') as vf:
+        if verticefile is not None and edgefile is not None:
+            with open(verticefile, 'r') as vf:
                 for line in vf:
                     if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
                         vertex = line.strip('\n').split(',')
                         self.addNode(int(vertex[0]), float(
                         vertex[1]), float(vertex[2]))
-            with open(filename+"_edges.txt", 'r') as ve:
+            with open(edgefile, 'r') as ve:
                 for line in ve:
                     if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
                         edge = line.strip('\n').split(',')
@@ -113,7 +111,7 @@ class Graph:
 
         for edgeid, edge in edges.items():
             self.edgeHash[(edge[0], edge[1])] = edgeid
-        
+
         self.largestEdgeID = max(self.edges.keys())
         self.numberOfEdges -= c
         print("Remove", c, "Duplicated Edges")
@@ -224,23 +222,3 @@ class Graph:
         file1.close()
         file2.close()
         print("Done.")
-
-    def Plot2MatPlotLib(self):
-        n = list()
-
-        for id, edge in self.edges.items():
-            n1_id, n2_id = edge[0], edge[1]
-            n1, n2 = self.nodes[n1_id], self.nodes[n2_id]
-
-            if n1 not in n:
-                n.append(n1)
-            if n2 not in n:
-                n.append(n2)
-
-            plt.plot([n1[0], n2[0]], [n1[1], n2[1]],
-                     color='dimgray', linewidth=3)
-
-        lons, lats = map(list, zip(*n))
-
-        plt.scatter(lons, lats, s=200, c='dimgray')
-        plt.show()
