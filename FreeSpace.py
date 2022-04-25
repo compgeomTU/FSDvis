@@ -29,33 +29,8 @@ class FreeSpace():
     # right vertical cell wall - free space end
     __y1_e: float
 
-    def __init__(self, x0_s, x0_e, x1_s, x1_e,
-                    y0_s, y0_e, y1_s, y1_e):
-        self.__x0_s = x0_s
-        self.__x0_e = x0_e
-        self.__x1_s = x1_s
-        self.__x1_e = x1_e
-        self.__y0_s = y0_s
-        self.__y0_e = y0_e
-        self.__y1_s = y1_s
-        self.__y1_e = y1_e
-
     @classmethod
-    def fullFreeSpace(cls):
-        x0_s = 0.0
-        x0_e = 1.0
-        x1_s = 0.0
-        x1_e = 1.0
-        y0_s = 0.0
-        y0_e = 1.0
-        y1_s = 0.0
-        y1_e = 1.0
-
-        return cls(x0_s, x0_e, x1_s, x1_e,
-                    y0_s, y0_e, y1_s, y1_e)
-
-    @classmethod
-    def emptyFreeSpace(cls):
+    def nullFreeSpace(cls):
         x0_s = -1.0
         x0_e = -1.0
         x1_s = -1.0
@@ -68,24 +43,11 @@ class FreeSpace():
         return cls(x0_s, x0_e, x1_s, x1_e,
                     y0_s, y0_e, y1_s, y1_e)
 
-    @classmethod
-    def sampleFreeSpace(cls):
-        x0_s = 0.25000001
-        x0_e = 0.75000002
-        x1_s = 0.25000003
-        x1_e = 0.75000004
-        y0_s = 0.25000005
-        y0_e = 0.75000006
-        y1_s = 0.25000007
-        y1_e = 0.75000008
-
-        return cls(x0_s, x0_e, x1_s, x1_e,
-                    y0_s, y0_e, y1_s, y1_e)
 
     #easier to rewrite calfreespace than to worry about the import since it's in C
     #(x1, y1) is starting point of edge of G1 (x2, y2) is ending point of edge of G1 (xa, ya) is vertex of G2
     #(start, end) will start as (0,1) and will return as the reachable boundary of free space on that edge as a value between 0-1
-    def calculate(x1, y1, x2, y2, xa, ya, Epsilon):
+    def boundary(x1, y1, x2, y2, xa, ya, Epsilon):
         xdiff = x2 - x1
         ydiff = y2 - y1
         divisor = xdiff * xdiff + ydiff * ydiff
@@ -112,8 +74,7 @@ class FreeSpace():
         return (start, end)
 
     def build(self, precision=0.0001):
-        xs = list()
-        ys = list()
+        xs, ys = list(), list()
 
         def addPoint(x, y):
             for x_, y_ in zip(xs, ys):
@@ -162,11 +123,11 @@ class FreeSpace():
             y = self.__y0_s
             addPoint(x, y)
 
+        # free space exsits in line, no sufrace space exsits and cannot be seen
         if len(xs) < 3:
-            xs = list()
-            ys = list()
-
-        return xs, ys
+            return list(), list()
+        else:
+            return xs, ys
 
     # e: edge of graph
     # l: lower bound of cells elevation
