@@ -132,7 +132,7 @@ class FreeSpace():
     # e: edge of graph
     # l: lower bound of cells elevation
     # u: upper bound of cells elevation
-    def transform(self, e, lower_b=0, upper_b=1):
+    def transform(self, e, lower_b, upper_b):
         xs, ys = self.buildFreeSpace()
 
         # e: 2 3D coord points that define the edge
