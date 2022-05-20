@@ -1,15 +1,26 @@
-# Author: Will Rodman - Tulane University
+# Author:
+#   Will Rodman - Tulane University
+#   wrodman@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/mapmatching Cells.py
+#
 
 import math
+from collections import OrderedDict
 
 from FreeSpaceGraph import FreeSpaceGraph
 
 class FreeSpace(FreeSpaceGraph):
 
-    cell_boundaries_3D: dict
+    cell_boundaries_3D: OrderedDict
 
     def __init__(self, G, C, epsilon):
         super().__init__(G, C, epsilon)
+
+        self.cell_boundaries_3D = self.cell_boundaries
 
     # e: edge of graph
     # l: lower bound of cells elevation
@@ -50,19 +61,8 @@ class FreeSpace(FreeSpaceGraph):
         return us, vs, ws
 
     def __str__(self):
-        string = """
-                         {:04.2f}    {:04.2f}
-                         ------------
-                    {:04.2f}              {:04.2f}
-                         |          |
-                         |          |
-                    {:04.2f}              {:04.2f}
-                         ------------
-                         {:04.2f}    {:04.2f}
+        str_ = f"Number of CB's: {len(self.cell_boundaries_3D)} \n\n"
+        for id, cb in self.cell_boundaries_3D.items():
+            str_ += f"{id}: {cb} \n"
 
-                """
-
-        format = string.format(0.0, 0.0, 0.0, 0.0,
-                                0.0, 0.0, 0.0, 0.0)
-
-        return format
+        return str_

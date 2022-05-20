@@ -1,11 +1,17 @@
 # Author:
-#     Carola Wenk
-#     cwenk@tulane.edu
+#    Carola Wenk
+#    cwenk@tulane.edu
 # Contributors:
 #    Rena Repenning
 #    www.renarepenning.com
 #    Emily Powers
 #    epowers3@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/traversalDistance GraphFreeSpace.py
+#                                           CalFreeSpace.py
 
 import math
 
@@ -153,6 +159,12 @@ class CellBoundary:
         # call CFS and return tuple --> compute from free space by traversing the free space
         self.start_fs, self.end_fs = self.calfreespace(x1, y1, x2, y2, xa, ya, eps)  # start/end of freespace
 
+    def __str__(self):
+        return "| Start = {:04.2f} |--| End = {:04.2f} |".format(self.start_fs, self.end_fs)
+
+    def __repr__(self):
+        return self.__str__()
+
     #easier to rewrite calfreespace than to worry about the import since it's in C
     #(x1, y1) is starting point of edge of G1 (x2, y2) is ending point of edge of G1 (xa, ya) is vertex of G2
     #(start, end) will start as (0,1) and will return as the reachable boundary of free space on that edge as a value between 0-1
@@ -167,7 +179,7 @@ class CellBoundary:
         q = (x1 * x1 + y1 * y1 + xa * xa + ya * ya - 2 * x1 * xa - 2 * y1 * ya - Epsilon * Epsilon) * divisor
         root = b * b - q
         if root < 0:
-            start=end=-1
+            start = end = -1
             return (start, end)
         root = math.sqrt(root)
         t2 = (b + root) / divisor
@@ -183,8 +195,8 @@ class CellBoundary:
         start = t1
         end = t2
         if start == end:
-            start=-1
-            end=-1
+            start = -1
+            end = -1
         return (start, end)
 
     def print_cellboundary(self):

@@ -1,4 +1,12 @@
-# Author: Will Rodman - Tulane University
+# Author:
+#   Will Rodman - Tulane University
+#   wrodman@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/mapmatching Cells.py
+#
 
 import numpy as np
 

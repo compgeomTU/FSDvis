@@ -1,5 +1,16 @@
-# Author: Erfan Hosseini Sereshgi - Tulane University
-# Contributor: Will Rodman - Tulane University
+# Author:
+#   Erfan Hosseini Sereshgi - Tulane University
+#    shosseinisereshgi@tulane.edu
+#
+# Contributor:
+#   Will Rodman - Tulane University
+#   wrodman@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/traversalDistance Graph.py
+#
 
 from geojson import LineString, Feature, FeatureCollection
 
@@ -33,6 +44,11 @@ class Graph:
                     edge = line.strip('\n').split(',')
                     self.connectTwoNodes(int(edge[0]), int(edge[1]), int(edge[2]))
 
+    def __str__(self):
+        return self.__class__.__name__
+
+    def __repr__(self):
+        return self.__str__()
 
     def addNode(self, nid, lon, lat, nodeweight=0):
         if nid not in self.nodes.keys():

@@ -1,4 +1,12 @@
-# Author: Will Rodman - Tulane University
+# Author:
+#   Will Rodman - Tulane University
+#   wrodman@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/mapmatching Cells.py
+#
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -34,13 +42,14 @@ class CurveToGraph:
         self.__G = Graph(graph_verticefile, graph_edgefile)
         self.__C = Curve(curve_verticefile, curve_edgefile)
 
+    # no. of cells = no. of G edges x no. of C edges
     def buildCells(self):
         self.__C.compute_vertex_dists()
         self.cells = Cells(self.__G, self.__C)
 
     def buildFreeSpace(self, epsilon):
         self.freespace = FreeSpace(self.__G, self.__C, float(epsilon))
-        print(self.freespace.cell_boundaries)
+        print(self.freespace)
 
     def plotFreeSpaceCells():
         pass
@@ -72,10 +81,11 @@ class CurveToGraph:
 
 if __name__ == "__main__":
 
-    ctg = CurveToGraph("sample_files/H_vertices.txt",
-                        "sample_files/H_edges.txt",
-                        "sample_files/G_vertices.txt",
-                        "sample_files/G_edges.txt")
-    ctg.buildFreeSpace(1.0)
+    ctg = CurveToGraph("sample_files/P_vertices.txt",
+                        "sample_files/P_edges.txt",
+                        "sample_files/Q_vertices.txt",
+                        "sample_files/Q_edges.txt")
+    ctg.buildCells()
+    ctg.buildFreeSpace(9.0)
 
 # python3 CurveToGraph.py

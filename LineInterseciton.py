@@ -1,4 +1,12 @@
-# Author: Erfan Hosseini Sereshgi - Tulane University
+# Author:
+#   Erfan Hosseini Sereshgi - Tulane University
+#   shosseinisereshgi@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/traversalDistance LineIntersection.py
+#
 
 import math
 
