@@ -1,34 +1,36 @@
+# Author: Will Rodman - Tulane University
+
 import math
+from collections import OrderedDict
 
-class Curve:
+from Graph import Graph
 
-    xs: list
-    ys: list
-    edge_dists: list
+class Curve(Graph):
 
-    edge_count: int
+    sorted_edges: OrderedDict
+    vertex_dists: list
 
-    __filename: str
+    def __init__(self, verticefile, edgefile):
+        super().__init__(verticefile, edgefile)
+        self.sorted_edges = OrderedDict(sorted(self.edges.items()))
 
-    def __init__(self, filename):
-        self.__filename = filename
-        self.xs, self.ys = list(), list()
-        self.edges, self.edge_dists = list(), list()
+        if not self.__isCurve():
+            msg = f"{self._verticefile} and {self._edgefile} are unsupported \
+                    types for {self.__class__.__name__}"
+            raise TypeError(msg)
 
-        i: int
-        for line in open(filename, "r"):
-            coords = line.split()
-            self.xs.append(float(coords[1]))
-            self.ys.append(float(coords[2]))
+    def __isCurve(self):
+        for i in range(len(self.sorted_edges)-1):
+            if self.sorted_edges[i][1] != self.sorted_edges[i+1][0]:
+                return False
+        return True
 
-            i = int(coords[0])
+    def compute_vertex_dists(self):
+        self.vertex_dists = list([0])
 
-            if i > 0:
-                edge = math.dist([self.xs[i-1], self.ys[i-1]],
-                                [self.xs[i], self.ys[i]])
-                dist = edge + self.edge_dists[i-1]
-                self.edge_dists.append(dist)
-            else:
-                self.edge_dists.append(0)
+        for id, edge in self.sorted_edges.items():
+            n1_id, n2_id = edge[0], edge[1]
+            n1, n2 = self.nodes[n1_id], self.nodes[n2_id]
 
-        self.edge_count = i
+            dist_ = math.dist([n1[0], n2[0]], [n1[1], n2[1]])
+            self.vertex_dists.append(dist_)
