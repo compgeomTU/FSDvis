@@ -21,17 +21,18 @@ class FreeSpaceGraph:
         self.g2 = g2
         self.e = epsilon
         self.cell_boundaries = {}
+
         # get these dynamically, for each --> given one fsbound print the adjacent
         # Horizontal boundaries
         for v in self.g2.nodes.keys():
             for e in self.g1.edges.keys():
-                self.cell_boundaries[(v, e, g1, g2)] = CellBoundary(
-                    v, e, g1, g2, self.e)
+                cb = CellBoundary(v, e, g1, g2, self.e)
+                self.cell_boundaries[(v, e, str(g1), str(g2))] = cb
         # Verticle boundaries
         for v in self.g1.nodes.keys():
             for e in self.g2.edges.keys():
-                self.cell_boundaries[(v, e, g2, g1)] = CellBoundary(
-                    v, e, g2, g1, self.e)
+                cb = CellBoundary(v, e, g2, g1, self.e)
+                self.cell_boundaries[(v, e, str(g2), str(g1))] = cb
 
     def print_cbs(self):
         print("-- Cell Boundaries --\n", print(self.cell_boundaries), "\n")

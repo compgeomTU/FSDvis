@@ -28,8 +28,8 @@ class CurveToGraph:
     __C: Curve
     __G: Graph
 
-    cells: Cells
-    freespace: FreeSpace
+    __cells: Cells
+    __freespace: FreeSpace
 
     def __init__(self, graph_verticefile, graph_edgefile,
                     curve_verticefile, curve_edgefile):
@@ -44,12 +44,10 @@ class CurveToGraph:
 
     # no. of cells = no. of G edges x no. of C edges
     def buildCells(self):
-        self.__C.compute_vertex_dists()
-        self.cells = Cells(self.__G, self.__C)
+        self.__cells = Cells(self.__G, self.__C)
 
     def buildFreeSpace(self, epsilon):
-        self.freespace = FreeSpace(self.__G, self.__C, float(epsilon))
-        print(self.freespace)
+        self.__freespace = FreeSpace(self.__G, self.__C, self.__cells, epsilon)
 
     def plotFreeSpaceCells():
         pass
@@ -86,6 +84,6 @@ if __name__ == "__main__":
                         "sample_files/Q_vertices.txt",
                         "sample_files/Q_edges.txt")
     ctg.buildCells()
-    ctg.buildFreeSpace(9.0)
+    ctg.buildFreeSpace(19.0)
 
 # python3 CurveToGraph.py

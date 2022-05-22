@@ -26,6 +26,8 @@ class Curve(Graph):
             msg = f"{self._verticefile} and {self._edgefile} are unsupported \
                     types for {self.__class__.__name__}"
             raise TypeError(msg)
+        else:
+            self.compute_vertex_dists()
 
     def __isCurve(self):
         for i in range(len(self.sorted_edges)-1):

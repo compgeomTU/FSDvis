@@ -17,16 +17,68 @@ class FreeSpace(FreeSpaceGraph):
 
     cell_boundaries_3D: OrderedDict
 
-    def __init__(self, G, C, epsilon):
+    def __init__(self, G, C, cells, epsilon):
         super().__init__(G, C, epsilon)
 
-        self.cell_boundaries_3D = self.cell_boundaries
+        # itterate though all cells of free space graph
+        for key in cells.cells.keys():
+
+            xs, ys = self.build2DFreeSpace(key)
+
+            # transform function 
+
+    def build2DFreeSpace(self, ids):
+
+        list_ = list()
+
+        def append(a):
+            if a not in list_: list_.append(a)
+
+        # for each cell , get 4 cell bounderies
+        G_n1_id, G_n2_id, C_n1_id, C_n2_id = ids[0], ids[1], ids[2], ids[3]
+
+        # horizonal lower CB
+        cb_1 = self.cell_boundaries[(G_n1_id, C_n1_id, "Graph", "Curve")]
+
+        # vertical left CB
+        cb_2 = self.cell_boundaries[(G_n1_id, C_n1_id, "Curve", "Graph")]
+
+        # horizonal upper CB
+        cb_3 = self.cell_boundaries[(G_n1_id, C_n2_id, "Graph", "Curve")]
+
+        # vetical right CB
+        cb_4 = self.cell_boundaries[(G_n2_id, C_n1_id, "Curve", "Graph")]
+
+        # check CB values and add to coordinate system
+        if cb_1.end_fs != -1.0: append((cb_1.end_fs, 0.0))
+
+        if cb_1.start_fs != -1.0: append((cb_1.start_fs, 0.0))
+
+        if cb_2.start_fs != -1.0: append((0.0, cb_2.start_fs))
+
+        if cb_2.end_fs != -1.0: append((0.0, cb_2.end_fs))
+
+        if cb_3.start_fs != -1.0: append((cb_3.start_fs, 1.0))
+
+        if cb_3.end_fs != -1.0: append((cb_3.end_fs, 1.0))
+
+        if cb_4.end_fs != -1.0: append((1.0, cb_4.end_fs))
+
+        if cb_4.start_fs != -1.0: append((1.0, cb_4.start_fs))
+
+        print(list_)
+
+        if len(list_) > 2:
+            x, y = zip(*list_)
+            return list(x), list(y)
+        else:
+            return x.clear(), y.clear()
+
 
     # e: edge of graph
     # l: lower bound of cells elevation
     # u: upper bound of cells elevation
-    def transform(self, e, lower_b, upper_b):
-        xs, ys = self.buildFreeSpace()
+    def transform(self, e, lower_b, upper_b, xs, ys):
 
         # e: 2 3D coord points that define the edge
         e0_x, e0_y = e[0][0], e[0][1]
