@@ -10,8 +10,8 @@
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import time
 
 from Graph import Graph
 from Curve import Curve
@@ -46,11 +46,25 @@ class CurveToGraph:
     def buildCells(self):
         self.__cells = Cells(self.__G, self.__C)
 
+    # no of CBs in FreeSpace class = no. of cells * 4
     def buildFreeSpace(self, epsilon):
         self.__freespace = FreeSpace(self.__G, self.__C, self.__cells, epsilon)
 
-    def plotFreeSpaceCells():
-        pass
+    def plotFreeSpace(self):
+        ax = plt.gca(projection = '3d')
+        ax.grid(False)
+        ax._axis3don = False
+
+        for id, cell in self.__cells.cells.items():
+            ax.plot_surface(cell.x_proj, cell.y_proj, cell.z_proj, alpha=0.5, color='lightgray')
+
+            if id in self.__freespace.cell_boundaries_3D:
+                cell_cb = self.__freespace.cell_boundaries_3D[id]
+                verticies = [list(zip(cell_cb[0], cell_cb[1], cell_cb[2]))]
+                poly_cell = Poly3DCollection(verticies, alpha=1.0,facecolor='dimgray')
+                ax.add_collection3d(poly_cell)
+
+        plt.show()
 
     def plot(self):
         plt.gca().set_aspect(1.0)
@@ -84,6 +98,7 @@ if __name__ == "__main__":
                         "sample_files/Q_vertices.txt",
                         "sample_files/Q_edges.txt")
     ctg.buildCells()
-    ctg.buildFreeSpace(10.0)
+    ctg.buildFreeSpace(2.0)
+    ctg.plotFreeSpace()
 
 # python3 CurveToGraph.py

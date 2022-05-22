@@ -21,18 +21,14 @@ class FreeSpace(FreeSpaceGraph):
         super().__init__(G, C, epsilon)
         self.cell_boundaries_3D = OrderedDict()
 
-        for ids, cell in cells.cells.items():
-            xs, ys = self.buildFreeSpaceCell(ids)
+        for id, cell in cells.cells.items():
+            xs, ys = self.buildFreeSpaceCell(id)
 
             if xs and ys:
                 us, vs, ws = self.map_(self, cell, xs, ys)
-                self.cell_boundaries_3D[ids] = (us, vs, ws)
+                self.cell_boundaries_3D[id] = (us, vs, ws)
 
-        print(self.cell_boundaries_3D)
-
-
-
-    def buildFreeSpaceCell(self, ids):
+    def buildFreeSpaceCell(self, id):
 
         list_ = list()
 
@@ -40,7 +36,7 @@ class FreeSpace(FreeSpaceGraph):
             if a not in list_: list_.append(a)
 
         # for each cell , get 4 cell bounderies
-        G_n1_id, G_n2_id, C_n1_id, C_n2_id = ids[0], ids[1], ids[2], ids[3]
+        G_n1_id, G_n2_id, C_n1_id, C_n2_id = id[0], id[1], id[2], id[3]
 
         # horizonal lower CB
         cb_1 = self.cell_boundaries[(G_n1_id, C_n1_id, "Graph", "Curve")]
@@ -90,10 +86,13 @@ class FreeSpace(FreeSpaceGraph):
 
         # lenght of cell in XY-plane
         l = math.sqrt((G_n2_x - G_n1_x)**2 + (G_n2_y - G_n1_y)**2)
+        print(a * abs(G_n2_x - G_n1_x))
 
         # <x, y> => <u, v, w> liniar map
         u = lambda x: (abs(G_n2_x - G_n1_x) * x) + min(G_n1_x, G_n2_x)
-        v = lambda x: (a * l * x) + min(G_n1_x, G_n2_x)
+        # not working for edges with negetive slopes
+        # v = lambda x: (a * l * x) + min(G_n1_x, G_n2_x)
+        v = lambda x: a * x * abs(G_n2_x - G_n1_x) + min(G_n1_x, G_n2_x)
         w = lambda y: (abs(C_u_z - C_l_z) * y) + min(C_l_z, C_u_z)
 
         us = list(map(u, xs))
