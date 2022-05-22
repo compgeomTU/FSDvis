@@ -84,6 +84,6 @@ if __name__ == "__main__":
                         "sample_files/Q_vertices.txt",
                         "sample_files/Q_edges.txt")
     ctg.buildCells()
-    ctg.buildFreeSpace(19.0)
+    ctg.buildFreeSpace(10.0)
 
 # python3 CurveToGraph.py

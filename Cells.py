@@ -44,12 +44,15 @@ class Cell:
     __area: float
 
     def __init__(self, G_edge_v1, G_edge_v2, C_edge_lower_vertex, C_edge_upper_vertex):
-        x = np.linspace(G_edge_v1[0], G_edge_v2[0], 3)
-        y = np.linspace(C_edge_lower_vertex, C_edge_upper_vertex, 3)
+        x = np.linspace(G_edge_v1[0], G_edge_v2[0], 2)
+        y = np.linspace(C_edge_lower_vertex, C_edge_upper_vertex, 2)
+
+
+    
 
         self.__area = abs(x[-1] - x[0]) * abs(y[-1] - y[0])
         self.x_proj, self.z_proj = np.meshgrid(x, y)
-        self.y_proj = np.linspace(G_edge_v1[1], G_edge_v2[1], 3)
+        self.y_proj = np.linspace(G_edge_v1[1], G_edge_v2[1], 2)
 
     def __str__(self):
         return "Area: {:04.2f}".format(self.__area)

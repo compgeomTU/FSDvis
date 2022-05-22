@@ -19,15 +19,20 @@ class FreeSpace(FreeSpaceGraph):
 
     def __init__(self, G, C, cells, epsilon):
         super().__init__(G, C, epsilon)
+        self.cell_boundaries_3D = OrderedDict()
 
-        # itterate though all cells of free space graph
-        for key in cells.cells.keys():
+        for ids, cell in cells.cells.items():
+            xs, ys = self.buildFreeSpaceCell(ids)
 
-            xs, ys = self.build2DFreeSpace(key)
+            if xs and ys:
+                us, vs, ws = self.map_(self, cell, xs, ys)
+                self.cell_boundaries_3D[ids] = (us, vs, ws)
 
-            # transform function 
+        print(self.cell_boundaries_3D)
 
-    def build2DFreeSpace(self, ids):
+
+
+    def buildFreeSpaceCell(self, ids):
 
         list_ = list()
 
@@ -66,49 +71,47 @@ class FreeSpace(FreeSpaceGraph):
 
         if cb_4.start_fs != -1.0: append((1.0, cb_4.start_fs))
 
-        print(list_)
-
         if len(list_) > 2:
             x, y = zip(*list_)
             return list(x), list(y)
         else:
-            return x.clear(), y.clear()
+            return list(), list()
 
+    @staticmethod
+    def map_(self, cell, xs, ys):
 
-    # e: edge of graph
-    # l: lower bound of cells elevation
-    # u: upper bound of cells elevation
-    def transform(self, e, lower_b, upper_b, xs, ys):
+        # corner points of cell
+        G_n1_x, G_n2_x = cell.x_proj[0][0], cell.x_proj[0][-1]
+        G_n1_y, G_n2_y = cell.y_proj[0], cell.y_proj[-1]
+        C_l_z, C_u_z = cell.z_proj[0][0], cell.z_proj[-1][0]
 
-        # e: 2 3D coord points that define the edge
-        e0_x, e0_y = e[0][0], e[0][1]
-        e1_x, e1_y = e[1][0], e[1][1]
+        # slope of cell in XY-plane
+        a = (G_n2_y - G_n1_y) / (G_n2_x - G_n1_x)
 
-        # l: lenght of horizonal boundry of surface
-        l = sqrt((e1_x-e0_x)**2+(e1_y-e0_y)**2)
+        # lenght of cell in XY-plane
+        l = math.sqrt((G_n2_x - G_n1_x)**2 + (G_n2_y - G_n1_y)**2)
 
-        # h: height of cell
-        h = upper_b - lower_b
+        # <x, y> => <u, v, w> liniar map
+        u = lambda x: (abs(G_n2_x - G_n1_x) * x) + min(G_n1_x, G_n2_x)
+        v = lambda x: (a * l * x) + min(G_n1_x, G_n2_x)
+        w = lambda y: (abs(C_u_z - C_l_z) * y) + min(C_l_z, C_u_z)
 
-        # t: index of left most point of edge
-        t = 0 if e0_x < e1_x else 1
-
-        ## u, v, w = liniar tranfomation (system of equations) from 2D to 3D
-        # mapping 2D domain to 3D range
-
-        # c^2 - b^2 = a^2 => a = sqrt(c^2 - b^2)
-        # a = sqrt((l * x)^2 - ((e1_y - e0_y) * x)^2)
-        # u = a + et_x
-        u = lambda x: math.sqrt((l*x)**2-((e1_y-e0_y)*x)**2)+ e[t][0]
         us = list(map(u, xs))
-
-        # v = (et_x - et^_x) * x - et_y
-        v = lambda x: (e[abs(t-1)][1] - e[t][1])*x + e[t][1]
         vs = list(map(v, xs))
-
-        # w = y + lower
-        w = lambda y: (y * h) + lower_b
         ws = list(map(w, ys))
+
+        #print()
+        #print(cell)
+        #print("G Edge n1: ", G_n1_x, G_n1_y)
+        #print("G Edge n2: ", G_n2_x, G_n2_y)
+        #print("Curve l and u bounds: ", C_l_z, "--", C_u_z)
+
+        #print(a)
+        #print(l)
+        #print(us)
+        #print(vs)
+        #print(ws)
+        #print()
 
         return us, vs, ws
 
