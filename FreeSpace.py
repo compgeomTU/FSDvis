@@ -14,41 +14,52 @@ from collections import OrderedDict
 from FreeSpaceGraph import FreeSpaceGraph
 
 class FreeSpace(FreeSpaceGraph):
-
-    cell_boundaries_3D: OrderedDict
+    cell_boundaries_3D: list
 
     def __init__(self, G, C, cells, epsilon):
         super().__init__(G, C, epsilon)
-        self.cell_boundaries_3D = OrderedDict()
+        self.cell_boundaries_3D = list()
 
-        for id, cell in cells.cells.items():
-            xs, ys = self.buildFreeSpaceCell(id)
+        for e, v in cells.cell_ids.items():
+            xs, ys = self.buildFreeSpaceCell(e, v)
 
             if xs and ys:
-                us, vs, ws = self.map_(self, cell, xs, ys)
-                self.cell_boundaries_3D[id] = (us, vs, ws)
+                G_n1_id, G_n2_id = G.edges[e[0]][0], G.edges[e[0]][1]
+                G_n1_x, G_n2_x = G.nodes[G_n1_id][0], G.nodes[G_n2_id][0]
+                G_n1_y, G_n2_y = G.nodes[G_n1_id][1], G.nodes[G_n2_id][1]
 
-    def buildFreeSpaceCell(self, id):
+                C_n1_id, C_n2_id = C.edges[e[1]][0], C.edges[e[1]][1]
+                C_l_z, C_u_z = C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
 
+                us, vs, ws = self.map_(G_n1_x, G_n2_x, G_n1_y, G_n2_y, C_l_z, C_u_z, xs, ys)
+
+                self.cell_boundaries_3D.append((us, vs, ws))
+
+    def buildFreeSpaceCell(self, e, v):
         list_ = list()
 
         def append(a):
             if a not in list_: list_.append(a)
 
-        # for each cell , get 4 cell bounderies
-        G_n1_id, G_n2_id, C_n1_id, C_n2_id = id[0], id[1], id[2], id[3]
+        ### LOOK INTO ########################### 09/01/2022
+
+        class TestCellBoundary():
+            start_fs = 0.50
+            end_fs = 0.50
 
         # horizonal lower CB
-        cb_1 = self.cell_boundaries[(G_n1_id, C_n1_id, "Graph", "Curve")]
+        cb_1 = TestCellBoundary()
 
         # vertical left CB
-        cb_2 = self.cell_boundaries[(G_n1_id, C_n1_id, "Curve", "Graph")]
+        cb_2 = TestCellBoundary()
 
         # horizonal upper CB
-        cb_3 = self.cell_boundaries[(G_n1_id, C_n2_id, "Graph", "Curve")]
+        cb_3 = TestCellBoundary()
 
         # vetical right CB
-        cb_4 = self.cell_boundaries[(G_n2_id, C_n1_id, "Curve", "Graph")]
+        cb_4 = TestCellBoundary()
+
+        ### LOOK INTO #############################
 
         # check CB values and add to coordinate system
         if cb_1.end_fs != -1.0: append((cb_1.end_fs, 0.0))
@@ -74,43 +85,29 @@ class FreeSpace(FreeSpaceGraph):
             return list(), list()
 
     @staticmethod
-    def map_(self, cell, xs, ys):
-
-        # corner points of cell
-        G_n1_x, G_n2_x = cell.x_proj[0][0], cell.x_proj[0][-1]
-        G_n1_y, G_n2_y = cell.y_proj[0], cell.y_proj[-1]
-        C_l_z, C_u_z = cell.z_proj[0][0], cell.z_proj[-1][0]
+    def map_(G_n1_x, G_n2_x, G_n1_y, G_n2_y, C_l_z, C_u_z, xs, ys):
 
         # slope of cell in XY-plane
-        a = (G_n2_y - G_n1_y) / (G_n2_x - G_n1_x)
+        if (G_n2_x - G_n1_x) != 0.0:
+            a = ((G_n2_y - G_n1_y) / (G_n2_x - G_n1_x)) * abs(G_n2_x - G_n1_x)
+        else:
+            a = G_n2_y - G_n1_y
 
-        # lenght of cell in XY-plane
-        l = math.sqrt((G_n2_x - G_n1_x)**2 + (G_n2_y - G_n1_y)**2)
-        print(a * abs(G_n2_x - G_n1_x))
+        if a > 0.0:
+            b = min(G_n1_y, G_n2_y)
+        elif a == 0.0:
+            b = min(G_n1_y, G_n2_y)
+        else:
+            b = max(G_n1_y, G_n2_y)
 
-        # <x, y> => <u, v, w> liniar map
+        # <x, y> => <u, v, w> linear map
         u = lambda x: (abs(G_n2_x - G_n1_x) * x) + min(G_n1_x, G_n2_x)
-        # not working for edges with negetive slopes
-        # v = lambda x: (a * l * x) + min(G_n1_x, G_n2_x)
-        v = lambda x: a * x * abs(G_n2_x - G_n1_x) + min(G_n1_x, G_n2_x)
+        v = lambda x:  a * x + b
         w = lambda y: (abs(C_u_z - C_l_z) * y) + min(C_l_z, C_u_z)
 
         us = list(map(u, xs))
         vs = list(map(v, xs))
         ws = list(map(w, ys))
-
-        #print()
-        #print(cell)
-        #print("G Edge n1: ", G_n1_x, G_n1_y)
-        #print("G Edge n2: ", G_n2_x, G_n2_y)
-        #print("Curve l and u bounds: ", C_l_z, "--", C_u_z)
-
-        #print(a)
-        #print(l)
-        #print(us)
-        #print(vs)
-        #print(ws)
-        #print()
 
         return us, vs, ws
 

@@ -12,11 +12,11 @@
 #   GitHub.com compgeomTU/traversalDistance Graph.py
 #
 
-from geojson import LineString, Feature, FeatureCollection
+import geojson
 
 class Graph:
 
-    def __init__(self, verticefile, edgefile):
+    def __init__(self, verticefile = None, edgefile = None):
         self._verticefile = verticefile
         self._edgefile = edgefile
 
@@ -33,16 +33,18 @@ class Graph:
         self.deletedNodes = {}
         self.breadcrumbs = {}  # id -> [[lon,lat],[lon,lat], ...]
 
-        with open(verticefile, 'r') as vf:
-            for line in vf:
-                if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
-                    vertex = line.strip('\n').split(',')
-                    self.addNode(int(vertex[0]), float(vertex[1]), float(vertex[2]))
-        with open(edgefile, 'r') as ve:
-            for line in ve:
-                if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
-                    edge = line.strip('\n').split(',')
-                    self.connectTwoNodes(int(edge[0]), int(edge[1]), int(edge[2]))
+        if verticefile is not None and edgefile is not None:
+            with open(verticefile, 'r') as vf:
+                for line in vf:
+                    if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
+                        vertex = line.strip('\n').split(',')
+                        self.addNode(int(vertex[0]), float(vertex[1]), float(vertex[2]))
+            with open(edgefile, 'r') as ve:
+                for line in ve:
+                    if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
+                        edge = line.strip('\n').split(',')
+                        self.connectTwoNodes(int(edge[0]), int(edge[1]), int(edge[2]))
+
 
     def __str__(self):
         return self.__class__.__name__

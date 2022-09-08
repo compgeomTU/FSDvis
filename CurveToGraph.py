@@ -55,14 +55,13 @@ class CurveToGraph:
         ax.grid(False)
         ax._axis3don = False
 
-        for id, cell in self.__cells.cells.items():
-            ax.plot_surface(cell.x_proj, cell.y_proj, cell.z_proj, alpha=0.5, color='lightgray')
+        for cell in self.__cells.cells.values():
+            ax.plot_surface(cell.x_proj, cell.y_proj, cell.z_proj, alpha=0.3, color='lightgray')
 
-            if id in self.__freespace.cell_boundaries_3D:
-                cell_cb = self.__freespace.cell_boundaries_3D[id]
-                verticies = [list(zip(cell_cb[0], cell_cb[1], cell_cb[2]))]
-                poly_cell = Poly3DCollection(verticies, alpha=1.0,facecolor='dimgray')
-                ax.add_collection3d(poly_cell)
+        for cell_cb in self.__freespace.cell_boundaries_3D:
+            verticies = [list(zip(cell_cb[0], cell_cb[1], cell_cb[2]))]
+            poly_cell = Poly3DCollection(verticies, alpha=1.0,facecolor='dimgray')
+            ax.add_collection3d(poly_cell)
 
         plt.show()
 
@@ -93,12 +92,18 @@ class CurveToGraph:
 
 if __name__ == "__main__":
 
-    ctg = CurveToGraph("sample_files/P_vertices.txt",
-                        "sample_files/P_edges.txt",
-                        "sample_files/Q_vertices.txt",
-                        "sample_files/Q_edges.txt")
+    #ctg = CurveToGraph("sample_files/P_vertices.txt",
+    #                    "sample_files/P_edges.txt",
+    #                    "sample_files/Q_vertices.txt",
+    #                    "sample_files/Q_edges.txt")
+
+    ctg = CurveToGraph("sample_files/H_vertices.txt",
+                        "sample_files/H_edges.txt",
+                        "sample_files/G_vertices.txt",
+                        "sample_files/G_edges.txt")
+
     ctg.buildCells()
-    ctg.buildFreeSpace(2.0)
+    ctg.buildFreeSpace(2.5)
     ctg.plotFreeSpace()
 
 # python3 CurveToGraph.py

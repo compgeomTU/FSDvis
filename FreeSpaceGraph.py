@@ -27,12 +27,12 @@ class FreeSpaceGraph:
         for v in self.g2.nodes.keys():
             for e in self.g1.edges.keys():
                 cb = CellBoundary(v, e, g1, g2, self.e)
-                self.cell_boundaries[(v, e, str(g1), str(g2))] = cb
+                self.cell_boundaries[(str(g2), v, str(g1), e)] = cb
         # Verticle boundaries
         for v in self.g1.nodes.keys():
             for e in self.g2.edges.keys():
                 cb = CellBoundary(v, e, g2, g1, self.e)
-                self.cell_boundaries[(v, e, str(g2), str(g1))] = cb
+                self.cell_boundaries[(str(g1), v, str(g2), e)] = cb
 
     def print_cbs(self):
         print("-- Cell Boundaries --\n", print(self.cell_boundaries), "\n")
@@ -138,6 +138,7 @@ class FreeSpaceGraph:
         print("Projection check: ", C)
 
 class CellBoundary:
+
     def __init__(self, vertexID, edgeID, g_edges, g_verts, eps):
         # use ID's consistant with Erfan's code
         self.vertexID = vertexID

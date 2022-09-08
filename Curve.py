@@ -42,5 +42,5 @@ class Curve(Graph):
             n1_id, n2_id = edge[0], edge[1]
             n1, n2 = self.nodes[n1_id], self.nodes[n2_id]
 
-            dist_ = math.dist([n1[0], n2[0]], [n1[1], n2[1]])
+            dist_ = math.dist([n1[0], n2[0]], [n1[1], n2[1]]) + self.vertex_dists[-1]
             self.vertex_dists.append(dist_)

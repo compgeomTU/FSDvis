@@ -13,9 +13,17 @@ import numpy as np
 class Cells:
 
     cells: dict
+    cell_ids: dict
 
     def __init__(self, G, C):
         self.cells = dict()
+        self.cell_ids = dict()
+
+        # itteratve over curve from bottom to top of diagram
+        for C_id, C_edge in C.sorted_edges.items():
+            for G_id, G_edge in G.edges.items():
+
+                self.cell_ids[(G_id, C_id)] = [G_edge, C_edge]
 
         for G_edge in G.edges.values():
 
@@ -46,9 +54,6 @@ class Cell:
     def __init__(self, G_edge_v1, G_edge_v2, C_edge_lower_vertex, C_edge_upper_vertex):
         x = np.linspace(G_edge_v1[0], G_edge_v2[0], 2)
         y = np.linspace(C_edge_lower_vertex, C_edge_upper_vertex, 2)
-
-
-    
 
         self.__area = abs(x[-1] - x[0]) * abs(y[-1] - y[0])
         self.x_proj, self.z_proj = np.meshgrid(x, y)
