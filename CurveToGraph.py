@@ -56,11 +56,11 @@ class CurveToGraph:
         ax._axis3don = False
 
         for cell in self.__cells.cells.values():
-            ax.plot_surface(cell.x_proj, cell.y_proj, cell.z_proj, alpha=0.3, color='lightgray')
+            ax.plot_surface(cell.x_proj, cell.y_proj, cell.z_proj, alpha=0.25, color='lightgray')
 
         for cell_cb in self.__freespace.cell_boundaries_3D:
             verticies = [list(zip(cell_cb[0], cell_cb[1], cell_cb[2]))]
-            poly_cell = Poly3DCollection(verticies, alpha=1.0,facecolor='dimgray')
+            poly_cell = Poly3DCollection(verticies, alpha=1.0, facecolor='dimgray')
             ax.add_collection3d(poly_cell)
 
         plt.show()
@@ -97,13 +97,20 @@ if __name__ == "__main__":
     #                    "sample_files/Q_vertices.txt",
     #                    "sample_files/Q_edges.txt")
 
-    ctg = CurveToGraph("sample_files/H_vertices.txt",
-                        "sample_files/H_edges.txt",
-                        "sample_files/G_vertices.txt",
-                        "sample_files/G_edges.txt")
+    #ctg = CurveToGraph("sample_files/H_vertices.txt",
+    #                    "sample_files/H_edges.txt",
+    #                    "sample_files/G_vertices.txt",
+    #                    "sample_files/G_edges.txt")
+
+    ctg = CurveToGraph("sample_files/arc_de_triomphe_vertices.txt",
+                        "sample_files/arc_de_triomphe_edges.txt",
+                        "sample_files/vehicle_path_vertices.txt",
+                        "sample_files/vehicle_path_edges.txt")
 
     ctg.buildCells()
-    ctg.buildFreeSpace(2.5)
+    ctg.buildFreeSpace(5.0)
     ctg.plotFreeSpace()
+
+    #ctg.plot()
 
 # python3 CurveToGraph.py
