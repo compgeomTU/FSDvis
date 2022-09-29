@@ -22,9 +22,12 @@ class Curve(Graph):
         super().__init__(verticefile, edgefile)
         self.sorted_edges = OrderedDict(sorted(self.edges.items()))
 
+    #def __init__(self, filename):
+    #    super().__init__(filename)
+    #    self.sorted_edges = OrderedDict(sorted(self.edges.items()))
+
         if not self.__isCurve():
-            msg = f"{self._verticefile} and {self._edgefile} are unsupported \
-                    types for {self.__class__.__name__}"
+            msg = f"Files are unsupported for {self.__class__.__name__}"
             raise TypeError(msg)
         else:
             self.compute_vertex_dists()
