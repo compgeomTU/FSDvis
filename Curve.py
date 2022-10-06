@@ -22,6 +22,8 @@ class Curve(Graph):
         super().__init__(verticefile, edgefile)
         self.sorted_edges = OrderedDict(sorted(self.edges.items()))
 
+        print(self.sorted_edges)
+
     #def __init__(self, filename):
     #    super().__init__(filename)
     #    self.sorted_edges = OrderedDict(sorted(self.edges.items()))

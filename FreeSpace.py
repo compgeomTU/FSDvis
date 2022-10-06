@@ -23,7 +23,13 @@ class FreeSpace(FreeSpaceGraph):
         for e_ids, v_ids in cells.cell_ids.items():
             xs, ys = self.buildFreeSpaceCell(e_ids, v_ids)
 
-            if xs and ys:
+            # test if empty:
+            if xs is None:
+                print(f"G: {v_ids[0]} C: {v_ids[1]} is EMPTY")
+            else:
+                print(f"G: {v_ids[0]} C: {v_ids[1]} has FS")
+
+            if xs is not None and ys is not None:
                 G_n1_id, G_n2_id = G.edges[e_ids[0]][0], G.edges[e_ids[0]][1]
                 G_n1_x, G_n2_x = G.nodes[G_n1_id][0], G.nodes[G_n2_id][0]
                 G_n1_y, G_n2_y = G.nodes[G_n1_id][1], G.nodes[G_n2_id][1]
@@ -80,7 +86,7 @@ class FreeSpace(FreeSpaceGraph):
             x, y = zip(*list_)
             return list(x), list(y)
         else:
-            return list(), list()
+            return None, None
 
     @staticmethod
     def map_(G_n1_x, G_n2_x, G_n1_y, G_n2_y, C_l_z, C_u_z, xs, ys):

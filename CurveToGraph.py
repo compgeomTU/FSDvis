@@ -160,4 +160,4 @@ if __name__ == "__main__":
 
     # python3 CurveToGraph.py <CTG_SAMPLE_NO> <EPSILON>
     # Example:
-    # python3 CurveToGraph.py 2 2
+    # python3 CurveToGraph.py 4 1.25
