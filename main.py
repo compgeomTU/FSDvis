@@ -5,25 +5,25 @@ import sys, logging
 from CurveToGraph import CurveToGraph
 
 if __name__ == "__main__":
-    logging.basicConfig(filename="main.log",
-                        format='%(asctime)s %(message)s',
-                        level=logging.INFO,
-                        filemode='w')
 
     CTG_SAMPLE_NO = int(sys.argv[1])
 
     if CTG_SAMPLE_NO == 1:
-        graphfile, curvefile = "sample_files/P", "sample_files/Q"
+        graphfile, curvefile = "samples/P", "samples/Q"
 
     elif CTG_SAMPLE_NO == 2:
-        graphfile, curvefile = "sample_files/H", "sample_files/G"
+        graphfile, curvefile = "samples/H", "samples/G"
 
     elif CTG_SAMPLE_NO == 3:
-        graphfile, curvefile = "sample_files/arc_de_triomphe", "sample_files/vehicle_path"
+        graphfile, curvefile = "samples/arc_de_triomphe", "samples/vehicle_path"
 
     elif CTG_SAMPLE_NO == 4:
-        graphfile, curvefile = "sample_files/A", "sample_files/B"
+        graphfile, curvefile = "samples/A", "samples/B"
 
+    logging.basicConfig(filename=f"logs/{CTG_SAMPLE_NO}.log",
+                        format='%(asctime)s %(message)s',
+                        level=logging.INFO,
+                        filemode='w')
     logging.info(f"Graph: {graphfile} Curve: {curvefile}")
     ctg = CurveToGraph(graphfile, curvefile)
 
