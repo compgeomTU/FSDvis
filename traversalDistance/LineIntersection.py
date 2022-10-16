@@ -1,14 +1,10 @@
-# Author:
-#   Erfan Hosseini Sereshgi - Tulane University
-#   shosseinisereshgi@tulane.edu
-#
-# -----------------------------------------------------------------------------
-#
-# Source Repository:
-#   GitHub.com compgeomTU/traversalDistance LineIntersection.py
-#
+# Last edited: 2022-03-17
+# Author: Erfan Hosseini Sereshgi - Tulane University
+
+"""Rena: added flag to disable printing, try catch block to return test numbers"""
 
 import math
+
 
 def find_ellipse_max_min_points(line1, line2, epsilon, debug=False):
     if line1[0] == line1[1] or line2[0] == line2[1]:
@@ -220,3 +216,14 @@ def find_ellipse_max_min_points(line1, line2, epsilon, debug=False):
     max2 = fraction_of_segment(*line2, max2)
 
     return min1, max1, min2, max2
+
+
+# test
+'''
+line1 = [[0, 0],[0, 1]]
+line2 = [[1, -2],[2, 3]]
+epsilon = 1
+print(line1)
+print(line2)
+print(find_ellipse_max_min_points(line1, line2, epsilon))
+'''

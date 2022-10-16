@@ -1,25 +1,14 @@
-# Author:
-#   Erfan Hosseini Sereshgi - Tulane University
-#    shosseinisereshgi@tulane.edu
-#
-# Contributor:
-#   Will Rodman - Tulane University
-#   wrodman@tulane.edu
-#
-# -----------------------------------------------------------------------------
-#
-# Source Repository:
-#   GitHub.com compgeomTU/traversalDistance Graph.py
-#
+# Last edited: 2022-03-17
+# Authors: Erfan Hosseini Sereshgi - Tulane University
+#          Will Rodman - Tulane University
 
+from geojson import LineString, Feature, FeatureCollection
+import matplotlib.pyplot as plt
 import geojson
 
+
 class Graph:
-
-    def __init__(self, verticefile = None, edgefile = None):
-        self._verticefile = verticefile
-        self._edgefile = edgefile
-
+    def __init__(self, filename=None):
         self.nodes = {}  # id -> [lon,lat]
         self.edges = {}  # id -> [n1, n2]
         self.nodeLink = {}   # id -> list of next nodes
@@ -29,28 +18,22 @@ class Graph:
         self.edgeHash = {}  # (nid1, nid2) -> edge id
         self.edgeWeight = {}
         self.nodeWeight = {}
+        self.nodeDegree = {}
         self.edgeInt = {}
         self.deletedNodes = {}
         self.breadcrumbs = {}  # id -> [[lon,lat],[lon,lat], ...]
-
-        if verticefile is not None and edgefile is not None:
-            with open(verticefile, 'r') as vf:
+        if filename is not None:
+            with open(filename+"_vertices.txt", 'r') as vf:
                 for line in vf:
                     if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
                         vertex = line.strip('\n').split(',')
-                        self.addNode(int(vertex[0]), float(vertex[1]), float(vertex[2]))
-            with open(edgefile, 'r') as ve:
+                        self.addNode(int(vertex[0]), float(
+                        vertex[1]), float(vertex[2]))
+            with open(filename+"_edges.txt", 'r') as ve:
                 for line in ve:
                     if line != "\n" and line != "" and line != "\r\n" and line != "\r" and line != "\n\r": # No empty lines. Compatible with all OSs
                         edge = line.strip('\n').split(',')
                         self.connectTwoNodes(int(edge[0]), int(edge[1]), int(edge[2]))
-
-
-    def __str__(self):
-        return self.__class__.__name__
-
-    def __repr__(self):
-        return self.__str__()
 
     def addNode(self, nid, lon, lat, nodeweight=0):
         if nid not in self.nodes.keys():
@@ -132,7 +115,7 @@ class Graph:
 
         for edgeid, edge in edges.items():
             self.edgeHash[(edge[0], edge[1])] = edgeid
-
+        
         self.largestEdgeID = max(self.edges.keys())
         self.numberOfEdges -= c
         print("Remove", c, "Duplicated Edges")
@@ -190,3 +173,76 @@ class Graph:
 
                 node_list = node_list + cclist
         self.largestEdgeID = max(self.edges.keys())
+
+    def Dump2GeoJson(self, filename):
+
+        print("Dump geojson to "+filename)
+
+        myfeature = []
+
+        for edgeId, edge in self.edges.items():
+            n1, n2 = edge[0], edge[1]
+
+            lon1 = self.nodes[n1][0]
+            lat1 = self.nodes[n1][1]
+
+            lon2 = self.nodes[n2][0]
+            lat2 = self.nodes[n2][1]
+
+            myfeature.append(Feature(properties={
+                             "id": edgeId, "type": "residential"}, geometry=LineString([(lon1, lat1), (lon2, lat2)])))
+
+        feature_collection = FeatureCollection(myfeature)
+
+        with open(filename, "w") as fout:
+            geojson.dump(feature_collection, fout, indent=2)
+
+        print("Done.")
+
+    def Dump2txt(self, filename):
+
+        print("Dump text files to "+filename)
+        file1 = open(filename+'_vertices.txt', 'w')
+        file2 = open(filename+'_edges.txt', 'w')
+        vertices = []
+
+        for edgeId, edge in self.edges.items():
+            n1, n2 = edge[0], edge[1]
+
+            lon1 = self.nodes[n1][0]
+            lat1 = self.nodes[n1][1]
+
+            lon2 = self.nodes[n2][0]
+            lat2 = self.nodes[n2][1]
+
+            if self.nodes[n1] not in vertices:
+                vertices.append(self.nodes[n1])
+                file1.write(str(n1)+","+str(lon1)+","+str(lat1)+"\n")
+            if self.nodes[n2] not in vertices:
+                vertices.append(self.nodes[n2])
+                file1.write(str(n2)+","+str(lon2)+","+str(lat2)+"\n")
+            file2.write(str(edgeId)+","+str(n1)+","+str(n2)+"\n")
+
+        file1.close()
+        file2.close()
+        print("Done.")
+
+    def Plot2MatPlotLib(self):
+        n = list()
+
+        for id, edge in self.edges.items():
+            n1_id, n2_id = edge[0], edge[1]
+            n1, n2 = self.nodes[n1_id], self.nodes[n2_id]
+
+            if n1 not in n:
+                n.append(n1)
+            if n2 not in n:
+                n.append(n2)
+
+            plt.plot([n1[0], n2[0]], [n1[1], n2[1]],
+                     color='dimgray', linewidth=3)
+
+        lons, lats = map(list, zip(*n))
+
+        plt.scatter(lons, lats, s=200, c='dimgray')
+        plt.show()

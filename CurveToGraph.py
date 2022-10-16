@@ -7,6 +7,9 @@
 # Source Repository:
 #   GitHub.com compgeomTU/mapmatching Cells.py
 #
+#
+# python3 CurveToGraph.py <CTG_SAMPLE_NO> <EPSILON>
+# Example: python3 CurveToGraph.py 4 1.25
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
@@ -14,39 +17,21 @@ import numpy as np
 import time
 import sys
 
-from Graph import Graph
+from traversalDistance.Graph import Graph
 from Curve import Curve
 from Cells import Cells
 from FreeSpace import FreeSpace
 
 class CurveToGraph:
-
-    __graph_verticefile: str
-    __graph_edgefile: str
-    __curve_verticefile: str
-    __curve_edgefile: str
-
     __C: Curve
     __G: Graph
 
     __cells: Cells
     __freespace: FreeSpace
 
-    def __init__(self, graph_verticefile, graph_edgefile,
-                    curve_verticefile, curve_edgefile):
-
-        self.__graph_verticefile = graph_verticefile
-        self.__graph_edgefile = graph_edgefile
-        self.__curve_verticefile = curve_verticefile
-        self.__curve_edgefile = curve_edgefile
-
-        self.__G = Graph(graph_verticefile, graph_edgefile)
-        self.__C = Curve(curve_verticefile, curve_edgefile)
-
-    #def __init__(self, graph_filename, curve_filename):
-
-    #    self.__G = Graph(graph_filename)
-    #    self.__C = Curve(curve_filename)
+    def __init__(self, graph_filename, curve_filename):
+        self.__G = Graph(graph_filename)
+        self.__C = Curve(curve_filename)
 
     # no. of cells = no. of G edges x no. of C edges
     def buildCells(self):
@@ -116,38 +101,25 @@ class CurveToGraph:
 
         plt.show()
 
-
 if __name__ == "__main__":
 
     CTG_SAMPLE_NO = int(sys.argv[1])
 
     if CTG_SAMPLE_NO == 1:
-        ctg = CurveToGraph("sample_files/P_vertices.txt",
-                            "sample_files/P_edges.txt",
-                            "sample_files/Q_vertices.txt",
-                            "sample_files/Q_edges.txt")
+        ctg = CurveToGraph("sample_files/P", "sample_files/Q")
 
     elif CTG_SAMPLE_NO == 2:
-        ctg = CurveToGraph("sample_files/H_vertices.txt",
-                            "sample_files/H_edges.txt",
-                            "sample_files/G_vertices.txt",
-                            "sample_files/G_edges.txt")
+        ctg = CurveToGraph("sample_files/H", "sample_files/G")
 
     elif CTG_SAMPLE_NO == 3:
-        ctg = CurveToGraph("sample_files/arc_de_triomphe_vertices.txt",
-                            "sample_files/arc_de_triomphe_edges.txt",
-                            "sample_files/vehicle_path_vertices.txt",
-                            "sample_files/vehicle_path_edges.txt")
+        ctg = CurveToGraph("sample_files/arc_de_triomphe", "sample_files/vehicle_path")
 
     elif CTG_SAMPLE_NO == 4:
-        ctg = CurveToGraph("sample_files/A_vertices.txt",
-                            "sample_files/A_edges.txt",
-                            "sample_files/B_vertices.txt",
-                            "sample_files/B_edges.txt")
-
-    #ctg = CurveToGraph("sample_files/P", "sample_files/Q")
-    #ctg = CurveToGraph("sample_files/H", "sample_files/G")
-    #ctg = CurveToGraph("sample_files/arc_de_triomphe", "sample_files/vehicle_path")
+        #ctg = CurveToGraph("sample_files/A_vertices.txt",
+        #                    "sample_files/A_edges.txt",
+        #                    "sample_files/B_vertices.txt",
+        #                    "sample_files/B_edges.txt")
+        ctg = CurveToGraph("sample_files/A", "sample_files/B")
 
     if len(sys.argv) > 2:
         EPSILON = float(sys.argv[2])
@@ -157,7 +129,3 @@ if __name__ == "__main__":
 
     else:
         ctg.plot()
-
-    # python3 CurveToGraph.py <CTG_SAMPLE_NO> <EPSILON>
-    # Example:
-    # python3 CurveToGraph.py 4 1.25

@@ -11,23 +11,23 @@
 import math
 from collections import OrderedDict
 
-from FreeSpaceGraph import FreeSpaceGraph
+from traversalDistance.FreeSpaceGraph import FreeSpaceGraph
+from traversalDistance.Graph import Graph
+from Curve import Curve
 
 class FreeSpace(FreeSpaceGraph):
     cell_boundaries_3D: list
+    C: Curve
+    G: Graph
 
     def __init__(self, G, C, cells, epsilon):
         super().__init__(G, C, epsilon)
         self.cell_boundaries_3D = list()
+        self.C = C
+        self.G = G
 
         for e_ids, v_ids in cells.cell_ids.items():
             xs, ys = self.buildFreeSpaceCell(e_ids, v_ids)
-
-            # test if empty:
-            if xs is None:
-                print(f"G: {v_ids[0]} C: {v_ids[1]} is EMPTY")
-            else:
-                print(f"G: {v_ids[0]} C: {v_ids[1]} has FS")
 
             if xs is not None and ys is not None:
                 G_n1_id, G_n2_id = G.edges[e_ids[0]][0], G.edges[e_ids[0]][1]
@@ -47,24 +47,17 @@ class FreeSpace(FreeSpaceGraph):
         def append(a):
             if a not in list_: list_.append(a)
 
-        # horizonal key = (v, e, g1, g2)
-        # vertical key = (v, e, g2, g1)
-
         # horizonal lower CB
-        cb_1 = self.cell_boundaries[('Curve', v_ids[1][0], 'Graph', e_ids[0])]
-        #cb_1 = self.cell_boundaries[(v_ids[1][0], e_ids[0], G, C)]
+        cb_1 = self.cell_boundaries[(self.C, v_ids[1][0], self.G, e_ids[0])]
 
         # vertical left CB
-        cb_2 = self.cell_boundaries[('Graph', v_ids[0][0], 'Curve', e_ids[1])]
-        #cb_2 = self.cell_boundaries[(v_ids[0][0], e_ids[1]), C, G)]
+        cb_2 = self.cell_boundaries[(self.G, v_ids[0][0], self.C, e_ids[1])]
 
         # horizonal upper CB
-        cb_3 = self.cell_boundaries[('Curve', v_ids[1][1], 'Graph', e_ids[0])]
-        #cb_3 = self.cell_boundaries[(v_ids[1][1]', e_ids[0], G, C)]
+        cb_3 = self.cell_boundaries[(self.C, v_ids[1][1], self.G, e_ids[0])]
 
         # vetical right CB
-        cb_4 = self.cell_boundaries[('Graph', v_ids[0][1], 'Curve', e_ids[1])]
-        #cb_4 = self.cell_boundaries[(v_ids[0][1], e_ids[1], C, G)]
+        cb_4 = self.cell_boundaries[(self.G, v_ids[0][1], self.C, e_ids[1])]
 
         if cb_1.end_fs != -1.0: append((cb_1.end_fs, 0.0))
 

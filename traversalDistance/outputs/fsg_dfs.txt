@@ -1,0 +1,7 @@
+
+edge1=[[0.0, -3.0], [2.0, -3.0]]   edge2=[[-2.0, -1.0], [-1.0, -2.0]]
+start + end values: 0 1
+start + end values: -1 -1
+start + end values: -1 -1
+
+DFS success!!!
