@@ -8,7 +8,7 @@
 #   GitHub.com compgeomTU/mapmatching Cells.py
 #
 
-import math
+import math, logging
 from collections import OrderedDict
 
 from traversalDistance.FreeSpaceGraph import FreeSpaceGraph
@@ -26,38 +26,56 @@ class FreeSpace(FreeSpaceGraph):
         self.C = C
         self.G = G
 
-        for e_ids, v_ids in cells.cell_ids.items():
-            xs, ys = self.buildFreeSpaceCell(e_ids, v_ids)
+        #logging.info("--------------- FreeSpace Structure ---------------")
+        #for e_ids, v_ids in cells.cell_ids.items():
+        #    logging.info(f"   Cell: (G: {e_ids[0]} C: {e_ids[1]})")
 
-            if xs is not None and ys is not None:
-                G_n1_id, G_n2_id = G.edges[e_ids[0]][0], G.edges[e_ids[0]][1]
-                G_n1_x, G_n2_x = G.nodes[G_n1_id][0], G.nodes[G_n2_id][0]
-                G_n1_y, G_n2_y = G.nodes[G_n1_id][1], G.nodes[G_n2_id][1]
+        #    xs, ys = self.buildFreeSpaceCell(e_ids, v_ids)
 
-                C_n1_id, C_n2_id = C.edges[e_ids[1]][0], C.edges[e_ids[1]][1]
-                C_l_z, C_u_z = C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
+        #    if xs is not None and ys is not None:
+        #        G_n1_id, G_n2_id = G.edges[e_ids[0]][0], G.edges[e_ids[0]][1]
+        #        G_n1_x, G_n2_x = G.nodes[G_n1_id][0], G.nodes[G_n2_id][0]
+        #        G_n1_y, G_n2_y = G.nodes[G_n1_id][1], G.nodes[G_n2_id][1]
 
-                us, vs, ws = self.map_(G_n1_x, G_n2_x, G_n1_y, G_n2_y, C_l_z, C_u_z, xs, ys)
+        #        C_n1_id, C_n2_id = C.edges[e_ids[1]][0], C.edges[e_ids[1]][1]
+        #        C_l_z, C_u_z = C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
 
-                self.cell_boundaries_3D.append((us, vs, ws))
+        #        us, vs, ws = self.map_(G_n1_x, G_n2_x, G_n1_y, G_n2_y, C_l_z, C_u_z, xs, ys)
 
-    def buildFreeSpaceCell(self, e_ids, v_ids):
+        #        self.cell_boundaries_3D.append((us, vs, ws))
+        #
+        #self.cell_ids[(G_id, C_id)] = [G_edge, C_edge]
+
+        logging.info("--------------- FreeSpace Structure ---------------")
+        for G_id, G_edge in G.edges.items():
+            for C_id, C_edge in C.sorted_edges.items():
+                print(G_id, C_id, G_edge, C_edge)
+                xs, ys = self.buildFreeSpaceCell(G_id, C_id, G_edge, C_edge)
+                print(xs, ys)
+
+    #def buildFreeSpaceCell(self, e_ids, v_ids):
+    def buildFreeSpaceCell(self, G_id, C_id, G_edge, C_edge):
         list_ = list()
 
         def append(a):
             if a not in list_: list_.append(a)
 
         # horizonal lower CB
-        cb_1 = self.cell_boundaries[(self.C, v_ids[1][0], self.G, e_ids[0])]
+        #cb_1 = self.cell_boundaries[(self.C, v_ids[1][0], self.G, e_ids[0])]
+        cb_1 = self.cell_boundaries[(self.C, C_edge[0], self.G, G_id)]
+
 
         # vertical left CB
-        cb_2 = self.cell_boundaries[(self.G, v_ids[0][0], self.C, e_ids[1])]
+        #cb_2 = self.cell_boundaries[(self.G, v_ids[0][0], self.C, e_ids[1])]
+        cb_2 = self.cell_boundaries[(self.G, G_edge[0], self.C, C_id)]
 
         # horizonal upper CB
-        cb_3 = self.cell_boundaries[(self.C, v_ids[1][1], self.G, e_ids[0])]
+        #cb_3 = self.cell_boundaries[(self.C, v_ids[1][1], self.G, e_ids[0])]
+        cb_3 = self.cell_boundaries[(self.C, C_edge[1], self.G, G_id)]
 
         # vetical right CB
-        cb_4 = self.cell_boundaries[(self.G, v_ids[0][1], self.C, e_ids[1])]
+        #cb_4 = self.cell_boundaries[(self.G, v_ids[0][1], self.C, e_ids[1])]
+        cb_4 = self.cell_boundaries[(self.G, G_edge[1], self.C, C_id)]
 
         if cb_1.end_fs != -1.0: append((cb_1.end_fs, 0.0))
 

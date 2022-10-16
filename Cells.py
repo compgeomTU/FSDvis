@@ -8,6 +8,7 @@
 #   GitHub.com compgeomTU/mapmatching Cells.py
 #
 
+import logging
 import numpy as np
 
 class Cells:
@@ -20,23 +21,26 @@ class Cells:
         self.cell_ids = dict()
 
         # itteratve over curve from bottom to top of diagram
-        for C_id, C_edge in C.sorted_edges.items():
-            for G_id, G_edge in G.edges.items():
+        #for G_id, G_edge in G.edges.items():
+        #    for C_id, C_edge in C.sorted_edges.items():
+        #        self.cell_ids[(G_id, C_id)] = [G_edge, C_edge]
 
-                self.cell_ids[(G_id, C_id)] = [G_edge, C_edge]
-
-        for G_edge in G.edges.values():
+        logging.info("--------------- Cell Structure ---------------")
+        for G_id, G_edge in G.edges.items():
 
             G_n1_id, G_n2_id = G_edge[0], G_edge[1]
             G_n1, G_n2 = G.nodes[G_n1_id], G.nodes[G_n2_id]
 
-            for C_edge in C.sorted_edges.values():
+            for C_id, C_edge in C.sorted_edges.items():
 
                 C_n1_id, C_n2_id = C_edge[0], C_edge[1]
                 C_n1, C_n2 = G.nodes[C_n1_id], G.nodes[C_n2_id]
                 C_lower_vertex, C_upper_vertex = \
                     C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
 
+                logging.info(f"   Cell: (G: {G_id} C: {C_id})")
+                logging.info(f"      GV1: {G_n1_id} -> {G_n1}   GV2: {G_n1_id} -> {G_n1}")
+                logging.info(f"      CV1: {C_n1_id} -> {C_lower_vertex}   CV2: {C_n2_id} -> {C_upper_vertex}")
                 cell = Cell(G_n1, G_n2, C_lower_vertex, C_upper_vertex)
                 self.cells[(G_n1_id, G_n2_id, C_n1_id, C_n2_id)] = cell
 

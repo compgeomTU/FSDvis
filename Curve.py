@@ -8,7 +8,7 @@
 #   GitHub.com compgeomTU/mapmatching Cells.py
 #
 
-import math
+import math, logging
 from collections import OrderedDict
 
 from traversalDistance.Graph import Graph

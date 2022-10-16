@@ -11,8 +11,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import numpy as np
-import time
-import sys
+import time, logging
 
 from traversalDistance.Graph import Graph
 from Curve import Curve
@@ -29,6 +28,18 @@ class CurveToGraph:
     def __init__(self, graph_filename, curve_filename):
         self.__G = Graph(graph_filename)
         self.__C = Curve(curve_filename)
+
+        logging.info("--------------- Graph Structure ---------------")
+        for id, edge in self.__G.edges.items():
+            n1_id, n2_id = edge[0], edge[1]
+            n1, n2 = self.__G.nodes[n1_id], self.__G.nodes[n2_id]
+            logging.info(f"   E: {id}   V1: {n1_id} -> {n1}   V2: {n2_id} -> {n2}")
+
+        logging.info("--------------- Sorted Curve Structure ---------------")
+        for id, edge in self.__C.sorted_edges.items():
+            n1_id, n2_id = edge[0], edge[1]
+            n1, n2 = self.__G.nodes[n1_id], self.__G.nodes[n2_id]
+            logging.info(f"   E: {id}   V1: {n1_id} -> {n1}   V2: {n2_id} -> {n2}")
 
     # no. of cells = no. of G edges x no. of C edges
     def buildCells(self):
