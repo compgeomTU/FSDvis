@@ -32,9 +32,9 @@ class FreeSpace(FreeSpaceGraph):
                 xs, ys = self.buildFreeSpaceCell(G_id, C_id, G_edge, C_edge)
                 logging.info(f"   Cell:   GEID: {G_id}   CEID: {C_id}   GE: {G_edge}   CE: {C_edge})")
 
-                if xs is not None and ys is not None:
-                    logging.info(f"      FS          x: {xs}")
-                    logging.info(f"                  y: {ys}")
+                if len(xs) > 2 and len(ys) > 2:
+                    logging.info(f"      FS          x:    {xs}")
+                    logging.info(f"                  y:    {ys}")
 
                     G_n1_id, G_n2_id = G_edge[0], G_edge[1]
                     G_n1_x, G_n2_x = G.nodes[G_n1_id][0], G.nodes[G_n2_id][0]
@@ -50,7 +50,8 @@ class FreeSpace(FreeSpaceGraph):
                     logging.info(f"                  w(z): {ws}")
 
                 else:
-                    logging.info(f"      EMPTY")
+                    logging.info(f"      EMPTY       x:    {xs}")
+                    logging.info(f"                  y:    {ys}")
 
     def buildFreeSpaceCell(self, G_id, C_id, G_edge, C_edge):
         list_ = list()
@@ -86,11 +87,11 @@ class FreeSpace(FreeSpaceGraph):
 
         if cb_4.start_fs != -1.0: append((1.0, cb_4.start_fs))
 
-        if len(list_) > 2:
+        if list_:
             x, y = zip(*list_)
             return list(x), list(y)
         else:
-            return None, None
+            return list(), list()
 
     @staticmethod
     def map_(G_n1_x, G_n2_x, G_n1_y, G_n2_y, C_l_z, C_u_z, xs, ys):
