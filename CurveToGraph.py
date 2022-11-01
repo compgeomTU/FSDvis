@@ -35,10 +35,10 @@ class CurveToGraph:
             n1, n2 = self.__G.nodes[n1_id], self.__G.nodes[n2_id]
             logging.info(f"   E: {id}   V1: {n1_id} -> {n1}   V2: {n2_id} -> {n2}")
 
-        logging.info("--------------- Sorted Curve Structure ---------------")
-        for id, edge in self.__C.sorted_edges.items():
+        logging.info("--------------- Curve Structure ---------------")
+        for id, edge in self.__C.edges.items():
             n1_id, n2_id = edge[0], edge[1]
-            n1, n2 = self.__G.nodes[n1_id], self.__G.nodes[n2_id]
+            n1, n2 = self.__C.nodes[n1_id], self.__C.nodes[n2_id]
             logging.info(f"   E: {id}   V1: {n1_id} -> {n1}   V2: {n2_id} -> {n2}")
 
     # no. of cells = no. of G edges x no. of C edges

@@ -26,9 +26,25 @@ class FreeSpace(FreeSpaceGraph):
         self.C = C
         self.G = G
 
+        logging.info("--------------- Cell Boundary Structure ---------------")
+        for k, cb in self.cell_boundaries.items():
+            is_log = False
+
+            if k[0].__class__.__name__  == "Graph":
+                for edge in self.G.edges.values():
+                    if k[1] in edge:
+                        is_log = True
+                        break
+            elif k[0].__class__.__name__  == "Curve":
+                is_log = True
+
+            if is_log and (cb.start_fs != -1.0 and cb.end_fs != -1.0):
+                logging.info(f"   CB Key: ({k[0].__class__.__name__} {k[1]} {k[2].__class__.__name__} {k[3]})   Boundery: |{cb.start_fs} --- {cb.end_fs}|")
+
+
         logging.info("--------------- FreeSpace Structure ---------------")
         for G_id, G_edge in G.edges.items():
-            for C_id, C_edge in C.sorted_edges.items():
+            for C_id, C_edge in C.edges.items():
                 xs, ys = self.buildFreeSpaceCell(G_id, C_id, G_edge, C_edge)
                 logging.info(f"   Cell:   GEID: {G_id}   CEID: {C_id}   GE: {G_edge}   CE: {C_edge})")
 
@@ -86,6 +102,8 @@ class FreeSpace(FreeSpaceGraph):
         if cb_4.end_fs != -1.0: append((1.0, cb_4.end_fs))
 
         if cb_4.start_fs != -1.0: append((1.0, cb_4.start_fs))
+
+        #print(f"{(cb_1.end_fs, 0.0)}, {(cb_1.start_fs, 0.0)}, {(0.0, cb_2.start_fs)}, {(0.0, cb_2.end_fs)}, {(cb_3.start_fs, 1.0)}, {(cb_3.end_fs, 1.0)}, {(1.0, cb_4.end_fs)}, {(1.0, cb_4.start_fs)} \n")
 
         if list_:
             x, y = zip(*list_)

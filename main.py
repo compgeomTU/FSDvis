@@ -1,5 +1,5 @@
 # python3 main.py <CTG_SAMPLE_NO> <EPSILON>
-# Example: python3 main.py 4 1.25
+# Example: python3 main.py 5 5
 
 import sys, logging
 from CurveToGraph import CurveToGraph
@@ -19,6 +19,9 @@ if __name__ == "__main__":
 
     elif CTG_SAMPLE_NO == 4:
         graphfile, curvefile = "samples/A", "samples/B"
+
+    elif CTG_SAMPLE_NO == 5:
+        graphfile, curvefile = "samples/arc_de_triomphe_sub", "samples/vehicle_path_sub"
 
     logging.basicConfig(filename=f"logs/{CTG_SAMPLE_NO}.log",
                         format='%(asctime)s %(message)s',

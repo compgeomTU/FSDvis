@@ -20,23 +20,17 @@ class Cells:
         self.cells = dict()
         self.cell_ids = dict()
 
-        # itteratve over curve from bottom to top of diagram
-        #for G_id, G_edge in G.edges.items():
-        #    for C_id, C_edge in C.sorted_edges.items():
-        #        self.cell_ids[(G_id, C_id)] = [G_edge, C_edge]
-
         logging.info("--------------- Cell Structure ---------------")
         for G_id, G_edge in G.edges.items():
 
             G_n1_id, G_n2_id = G_edge[0], G_edge[1]
             G_n1, G_n2 = G.nodes[G_n1_id], G.nodes[G_n2_id]
 
-            for C_id, C_edge in C.sorted_edges.items():
+            for C_id, C_edge in C.edges.items():
 
                 C_n1_id, C_n2_id = C_edge[0], C_edge[1]
-                C_n1, C_n2 = G.nodes[C_n1_id], G.nodes[C_n2_id]
-                C_lower_vertex, C_upper_vertex = \
-                    C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
+                C_n1, C_n2 = C.nodes[C_n1_id], C.nodes[C_n2_id]
+                C_lower_vertex, C_upper_vertex = C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
 
                 logging.info(f"   Cell:   GEID: {G_id}   CEID: {C_id}   GE: {G_edge}   CE: {C_edge})")
                 logging.info(f"      GV1: {G_n1_id} -> {G_n1}   GV2: {G_n1_id} -> {G_n1}")
@@ -48,7 +42,6 @@ class Cells:
         return str(self.cells)
 
 class Cell:
-
     x_proj: np.ndarray
     y_proj: np.ndarray
     z_proj: np.ndarray
