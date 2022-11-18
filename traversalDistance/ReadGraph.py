@@ -15,6 +15,7 @@ Contributors:
 """
 
 import geojson
+import logging
 from geojson import LineString, Feature, FeatureCollection
 from Graph import Graph
 from CalFreeSpace import calfreespace
@@ -31,6 +32,17 @@ def testFreeSpaceGraph():
     e = 3
     # print("-- G: ", g, " -- H: ", h, " -- eps ", e, "")
 
+    for vertex in g.nodes.keys():
+        logging.info("G nodeID " + str(vertex) + " x " + str(g.nodes[vertex][0]) + " y " + str(g.nodes[vertex][1]))
+    for edge in g.edges.keys():
+        logging.info("G edgeID " + str(edge) + " v1 " + str(g.edges[edge][0]) + " v2 " + str(g.edges[edge][1]))
+
+    for vertex in h.nodes.keys():
+        logging.info("H nodeID " + str(vertex) + " x " + str(h.nodes[vertex][0]) + " y " + str(h.nodes[vertex][1]))
+    for edge in h.edges.keys():
+        logging.info("H edgeID " + str(edge) + " v1 " + str(h.edges[edge][0]) + " v2 " + str(h.edges[edge][1]))
+    
+    
     fsg = FreeSpaceGraph(g, h, e)
     # print("-- created FSG")
 
@@ -55,5 +67,6 @@ def PlotGraph():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename='dfs.log', encoding='utf-8', level=logging.INFO)
     testFreeSpaceGraph()
     # PlotGraph()

@@ -1,40 +1,45 @@
-# python3 main.py <CTG_SAMPLE_NO> <EPSILON>
-# Example: python3 main.py 5 5
+# python3 main.py <graph_filename> <curve_filename> -e <epsilon> -f <figue_filename> -l <log_filename>
+# Example: python3 main.py samples/A samples/B -e 1.5
+
+# Sample Filenames:
+#   graphfile, curvefile = samples/P samples/Q
+#   graphfile, curvefile = samples/H samples/G
+#   graphfile, curvefile = samples/arc_de_triomphe samples/vehicle_path
+#   graphfile, curvefile = samples/A samples/B
+#   graphfile, curvefile = samples/arc_de_triomphe_sub samples/vehicle_path_sub
 
 import sys, logging
 from CurveToGraph import CurveToGraph
 
 if __name__ == "__main__":
 
-    CTG_SAMPLE_NO = int(sys.argv[1])
+    graph_filename = str(sys.argv[1])
+    curve_filename = str(sys.argv[2])
 
-    if CTG_SAMPLE_NO == 1:
-        graphfile, curvefile = "samples/P", "samples/Q"
+    ctg = CurveToGraph(graph_filename, curve_filename)
+    figure_filename = None
 
-    elif CTG_SAMPLE_NO == 2:
-        graphfile, curvefile = "samples/H", "samples/G"
+    if '-l' in sys.argv:
+        index = sys.argv.index('-l') + 1
+        log_filename = str(sys.argv[index])
 
-    elif CTG_SAMPLE_NO == 3:
-        graphfile, curvefile = "samples/arc_de_triomphe", "samples/vehicle_path"
+        logging.basicConfig(filename=f"logs/{log_filename}",
+                            format='%(asctime)s %(message)s',
+                            level=logging.INFO,
+                            filemode='w')
+        logging.info(f"Graph: {graph_filename} Curve: {curve_filename}")
 
-    elif CTG_SAMPLE_NO == 4:
-        graphfile, curvefile = "samples/A", "samples/B"
+    if '-f' in sys.argv:
+        global figure_filename
+        index = sys.argv.index('-f') + 1
+        figure_filepath = str(sys.argv[index])
 
-    elif CTG_SAMPLE_NO == 5:
-        graphfile, curvefile = "samples/arc_de_triomphe_sub", "samples/vehicle_path_sub"
-
-    logging.basicConfig(filename=f"logs/{CTG_SAMPLE_NO}.log",
-                        format='%(asctime)s %(message)s',
-                        level=logging.INFO,
-                        filemode='w')
-    logging.info(f"Graph: {graphfile} Curve: {curvefile}")
-    ctg = CurveToGraph(graphfile, curvefile)
-
-    if len(sys.argv) > 2:
-        EPSILON = float(sys.argv[2])
-        logging.info(f"Epsilon: {EPSILON}")
+    if '-e' in sys.argv:
+        index = sys.argv.index('-e') + 1
+        epsilon = float(sys.argv[index])
+        logging.info(f"Epsilon: {epsilon}")
         ctg.buildCells()
-        ctg.buildFreeSpace(EPSILON)
-        ctg.plotFreeSpace()
+        ctg.buildFreeSpace(epsilon)
+        ctg.plotFreeSpace(figure_filename)
     else:
-        ctg.plot()
+        ctg.plot(figure_filename)

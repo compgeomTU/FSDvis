@@ -103,8 +103,6 @@ class FreeSpace(FreeSpaceGraph):
 
         if cb_4.start_fs != -1.0: append((1.0, cb_4.start_fs))
 
-        #print(f"{(cb_1.end_fs, 0.0)}, {(cb_1.start_fs, 0.0)}, {(0.0, cb_2.start_fs)}, {(0.0, cb_2.end_fs)}, {(cb_3.start_fs, 1.0)}, {(cb_3.end_fs, 1.0)}, {(1.0, cb_4.end_fs)}, {(1.0, cb_4.start_fs)} \n")
-
         if list_:
             x, y = zip(*list_)
             return list(x), list(y)
