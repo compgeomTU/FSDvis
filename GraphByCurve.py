@@ -18,7 +18,7 @@ from Curve import Curve
 from Cells import Cells
 from FreeSpace import FreeSpace
 
-class CurveToGraph:
+class GraphByCurve:
     __C: Curve
     __G: Graph
 
@@ -72,7 +72,8 @@ class CurveToGraph:
         else:
             plt.savefig(figue_filename)
 
-    def plot(self, figue_filename=None):
+    def plot(self, figue_filename):
+        print(figue_filename)
         plt.gca().set_aspect(1.0)
         G_n = list()
 
