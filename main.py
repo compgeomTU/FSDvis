@@ -21,11 +21,12 @@ if __name__ == "__main__":
     if '-l' in sys.argv:
         index = sys.argv.index('-l') + 1
         log_filename = str(sys.argv[index])
-
-        logging.basicConfig(filename=f"logs/{log_filename}",
+        print(log_filename)
+        logging.basicConfig(filename=log_filename,
                             format='%(asctime)s %(message)s',
                             level=logging.INFO,
-                            filemode='w')
+                            filemode='w',
+                            force=True)
         logging.info(f"Graph: {graph_filename} Curve: {curve_filename}")
 
     if '-f' in sys.argv:
