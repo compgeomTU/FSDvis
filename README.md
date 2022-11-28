@@ -16,11 +16,11 @@ To run the program, run a command line execution in the package with format:
 python3 main.py <graph filename: str> <curve filename: str>
 ```
 ##### Flags
-* `-e` type: (*int*) | specifies the Epsilon value for the free space diagram.
+* `-e` type: *int* | specifies the Epsilon value for the free space diagram.
 
-* `-f` type: (*str*) | saves plot as a type of file.
+* `-f` type: *str* | saves plot as a type of file.
 
-* `-l` type: (*str*) logged computation of Traversal Distance and free space
+* `-l` type: *str* logged computation of Traversal Distance and free space
 diagram as a .log file.
 
 ### Sample Inputs
