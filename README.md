@@ -66,13 +66,13 @@ python3 main.py samples/arc_de_triomphe samples/vehicle_path -e 5.0 -l docs/arc_
 ![Image](/docs/arc_de_triomphe_log.png?raw=true)
 
 #### Author
-**Will Rodman**     | wrodman@tulane.edu
+* **Will Rodman**     | wrodman@tulane.edu
 
 #### Contributors
-**Dr. Carola Wenk** | cwenk@tulane.edu             | https://www.cs.tulane.edu/~carola/
-**Erfan Hosseini**  | shosseinisereshgi@tulane.edu | https://erfanhosseini.com
-**Emily Powers**    | epowers3@tulane.edu
-**Rena Repenning**  |                              | http://renarepenning.com
+* **Dr. Carola Wenk** | cwenk@tulane.edu             | https://www.cs.tulane.edu/~carola/
+* **Erfan Hosseini**  | shosseinisereshgi@tulane.edu | https://erfanhosseini.com
+* **Emily Powers**    | epowers3@tulane.edu
+* **Rena Repenning**  |                              | http://renarepenning.com
 
 #### Version History
 **1.0.** 11-31-2022
