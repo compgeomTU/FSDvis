@@ -1,12 +1,11 @@
-# python3 main.py <graph_filename> <curve_filename> -e <epsilon> -f <figue_filename> -l <log_filename>
-# Example: python3 main.py samples/A samples/B -e 1.5
-
-# Sample Filenames:
-#   graphfile curvefile = samples/P samples/Q
-#   graphfile curvefile = samples/H samples/G
-#   graphfile curvefile = samples/arc_de_triomphe samples/vehicle_path
-#   graphfile curvefile = samples/A samples/B
-#   graphfile curvefile = samples/arc_de_triomphe_sub samples/vehicle_path_sub
+# Author:
+#   Will Rodman - Tulane University
+#   wrodman@tulane.edu
+#
+# -----------------------------------------------------------------------------
+#
+# Source Repository:
+#   GitHub.com compgeomTU/mapmatching main.py
 
 import sys, logging
 from GraphByCurve import GraphByCurve

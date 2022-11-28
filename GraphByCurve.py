@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------
 #
 # Source Repository:
-#   GitHub.com compgeomTU/mapmatching Cells.py
+#   GitHub.com compgeomTU/mapmatching GraphByCurve.py
 #
 
 import matplotlib.pyplot as plt

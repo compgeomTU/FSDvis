@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------
 #
 # Source Repository:
-#   GitHub.com compgeomTU/mapmatching Cells.py
+#   GitHub.com compgeomTU/mapmatching Curve.py
 #
 
 import math, logging
