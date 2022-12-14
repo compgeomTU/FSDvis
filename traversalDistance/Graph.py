@@ -115,7 +115,7 @@ class Graph:
 
         for edgeid, edge in edges.items():
             self.edgeHash[(edge[0], edge[1])] = edgeid
-        
+
         self.largestEdgeID = max(self.edges.keys())
         self.numberOfEdges -= c
         print("Remove", c, "Duplicated Edges")

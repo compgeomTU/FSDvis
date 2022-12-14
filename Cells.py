@@ -31,7 +31,6 @@ class Cells:
                 C_n1_id, C_n2_id = C_edge[0], C_edge[1]
                 C_n1, C_n2 = C.nodes[C_n1_id], C.nodes[C_n2_id]
                 C_lower_vertex, C_upper_vertex = C.vertex_dists[C_n1_id], C.vertex_dists[C_n2_id]
-
                 logging.info(f"   Cell:   GEID: {G_id}   CEID: {C_id}   GE: {G_edge}   CE: {C_edge})")
                 logging.info(f"      GV1: {G_n1_id} -> {G_n1}   GV2: {G_n1_id} -> {G_n1}")
                 logging.info(f"      CV1: {C_n1_id} -> {C_lower_vertex}   CV2: {C_n2_id} -> {C_upper_vertex}")

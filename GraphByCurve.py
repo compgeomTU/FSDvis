@@ -21,13 +21,12 @@ from FreeSpace import FreeSpace
 class GraphByCurve:
     __C: Curve
     __G: Graph
-
     __cells: Cells
     __freespace: FreeSpace
 
-    def __init__(self, graph_filename, curve_filename):
-        self.__G = Graph(graph_filename)
-        self.__C = Curve(curve_filename)
+    def __init__(self, G, C):
+        self.__G = G
+        self.__C = C
 
         logging.info("--------------- Graph Structure ---------------")
         for id, edge in self.__G.edges.items():
@@ -73,7 +72,6 @@ class GraphByCurve:
             plt.savefig(figue_filename)
 
     def plot(self, figue_filename):
-        print(figue_filename)
         plt.gca().set_aspect(1.0)
         G_n = list()
 
@@ -99,3 +97,9 @@ class GraphByCurve:
             plt.show()
         else:
             plt.savefig(figue_filename)
+
+    def set_graph(G):
+        self.__G = G
+
+    def set_curve(C):
+        self.__C = C

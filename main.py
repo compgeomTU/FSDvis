@@ -9,13 +9,17 @@
 
 import sys, logging
 from GraphByCurve import GraphByCurve
+from traversalDistance.Graph import Graph
+from Curve import Curve
 
 if __name__ == "__main__":
-
     graph_filename = str(sys.argv[1])
     curve_filename = str(sys.argv[2])
 
-    ctg = GraphByCurve(graph_filename, curve_filename)
+    graph = Graph(graph_filename)
+    curve = Curve(curve_filename)
+
+    ctg = GraphByCurve(graph, curve)
     figure_filename = None
 
     if '-l' in sys.argv:

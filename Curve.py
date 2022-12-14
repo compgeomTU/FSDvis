@@ -16,7 +16,7 @@ from traversalDistance.Graph import Graph
 class Curve(Graph):
     vertex_dists: list
 
-    def __init__(self, filename):
+    def __init__(self, filename=None):
         super().__init__(filename)
 
         if not self.__isCurve():
