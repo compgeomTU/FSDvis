@@ -78,9 +78,9 @@ def curve_node_distribution(curve, n_distributions):
 
     return sigma_curve
 
-graph = graph_node_distribution(Graph("samples/P"), 10)
-curve = curve_node_distribution(Curve("samples/Q"), 10)
+graph = graph_node_distribution(Graph("samples/P"), 15)
+curve = curve_node_distribution(Curve("samples/Q"), 15)
 ctg = GraphByCurve(graph, curve)
 ctg.buildCells()
-ctg.buildFreeSpace(1)
+ctg.buildFreeSpace(4)
 ctg.plotFreeSpace()
