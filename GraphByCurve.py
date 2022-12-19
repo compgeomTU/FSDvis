@@ -10,6 +10,7 @@
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from shapely.ops import unary_union
 import numpy as np
 import time, logging
 
@@ -17,16 +18,24 @@ from traversalDistance.Graph import Graph
 from Curve import Curve
 from Cells import Cells
 from FreeSpace import FreeSpace
+from NodeDistribution import graph_node_distribution, curve_node_distribution
 
 class GraphByCurve:
-    __C: Curve
-    __G: Graph
+    __G: Curve
+    __C: Graph
+    __sigma_G: Curve
+    __sigma_C: Graph
     __cells: Cells
     __freespace: FreeSpace
 
-    def __init__(self, G, C):
-        self.__G = G
-        self.__C = C
+    def __init__(self, G, C, n_approximation = None):
+        self.__G, self.__C = G, C
+
+        if n_approximation == None:
+            self.__sigma_G, self.__sigma_C = self.__G, self.__C
+        else:
+            self.__sigma_G = graph_node_distribution(G, n_approximation)
+            self.__sigma_C = curve_node_distribution(C, n_approximation)
 
         logging.info("--------------- Graph Structure ---------------")
         for id, edge in self.__G.edges.items():
@@ -46,7 +55,7 @@ class GraphByCurve:
 
     # no of CBs in FreeSpace class = no. of cells * 4
     def buildFreeSpace(self, epsilon):
-        self.__freespace = FreeSpace(self.__G, self.__C, self.__cells, epsilon)
+        self.__freespace = FreeSpace(self.__sigma_G, self.__sigma_C, epsilon)
 
     def plotFreeSpace(self, figue_filename=None):
         ax = plt.gca(projection = '3d')
@@ -58,7 +67,7 @@ class GraphByCurve:
 
         for cell_cb in self.__freespace.cell_boundaries_3D:
             verticies = [list(zip(cell_cb[0], cell_cb[1], cell_cb[2]))]
-            poly_cell = Poly3DCollection(verticies, alpha=1.0, facecolor='dimgray', edgecolor='black')
+            poly_cell = Poly3DCollection(verticies, alpha=1.0, facecolor='dimgray')
             ax.add_collection3d(poly_cell)
 
         for id, edge in self.__G.edges.items():
@@ -71,7 +80,7 @@ class GraphByCurve:
         else:
             plt.savefig(figue_filename)
 
-    def plot(self, figue_filename):
+    def plot(self, figue_filename=None):
         plt.gca().set_aspect(1.0)
         G_n = list()
 

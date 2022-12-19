@@ -19,6 +19,8 @@ python3 main.py <graph filename: str> <curve filename: str>
 **Flags:**
 * `-e` type: *int* | specifies the Epsilon value for the free space diagram.
 
+* `-n` type: *int* | number of area approximation terms of each cells free space.
+
 * `-f` type: *str* | saves plot as a type of file.
 
 * `-l` type: *str* logged computation of Traversal Distance and free space

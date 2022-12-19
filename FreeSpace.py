@@ -20,7 +20,7 @@ class FreeSpace(FreeSpaceGraph):
     C: Curve
     G: Graph
 
-    def __init__(self, G, C, cells, epsilon):
+    def __init__(self, G, C, epsilon):
         super().__init__(G, C, epsilon)
         self.cell_boundaries_3D = list()
         self.C = C

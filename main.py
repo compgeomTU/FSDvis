@@ -15,12 +15,9 @@ from Curve import Curve
 if __name__ == "__main__":
     graph_filename = str(sys.argv[1])
     curve_filename = str(sys.argv[2])
-
     graph = Graph(graph_filename)
     curve = Curve(curve_filename)
-
-    ctg = GraphByCurve(graph, curve)
-    figure_filename = None
+    figure_filename, n_approximation = None, None
 
     if '-l' in sys.argv:
         index = sys.argv.index('-l') + 1
@@ -35,8 +32,13 @@ if __name__ == "__main__":
 
     if '-f' in sys.argv:
         index = sys.argv.index('-f') + 1
-
         figure_filename = str(sys.argv[index])
+
+    if '-n' in sys.argv:
+        index = sys.argv.index('-n') + 1
+        n_approximation = int(sys.argv[index])
+
+    ctg = GraphByCurve(graph, curve, n_approximation)
 
     if '-e' in sys.argv:
         index = sys.argv.index('-e') + 1

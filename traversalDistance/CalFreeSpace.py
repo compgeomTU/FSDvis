@@ -15,7 +15,11 @@ def calfreespace(x1, y1, x2, y2, xa, ya, Epsilon):
   xdiff = x2-x1
   ydiff = y2-y1
   divisor = xdiff * xdiff + ydiff * ydiff
+
+  ### ADDED STATEMENT CHECK IF NEEDS TO BE ADDED TO REPO ###
   if divisor == 0.0: divisor = 1
+  ##########################################################
+
   b = (xa-x1) * xdiff + (ya-y1) * ydiff
   q = (x1 * x1 + y1 * y1 + xa * xa + ya * ya - 2 * x1 * xa - 2 * y1 * ya - Epsilon * Epsilon) * divisor
   root = b * b - q
