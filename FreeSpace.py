@@ -25,7 +25,7 @@ class FreeSpace(FreeSpaceGraph):
         self.cell_boundaries_3D = list()
         self.free_space_area = 0.0
 
-    def build_cell_boundaries_3D():
+    def build_cell_boundaries_3D(self):
         logging.info("--------------- Cell Boundary Structure ---------------")
         for k, cb in self.cell_boundaries.items():
             is_log = False
@@ -69,14 +69,14 @@ class FreeSpace(FreeSpaceGraph):
                     logging.info(f"      EMPTY       x:    {xs}")
                     logging.info(f"                  y:    {ys}")
 
-    def calculateArea(self, G, C, epsilon):
+    def calculateArea(self):
 
         for G_id, G_edge in self.g1.edges.items():
             for C_id, C_edge in self.g2.edges.items():
                 xs, ys = self.buildFreeSpaceCell(G_id, C_id, G_edge, C_edge)
 
                 if len(xs) > 2 and len(ys) > 2:
-                    cb_area = 0.5 * np.abs(np.dot(xs, np.roll(y, 1)) - np.dot(ys, np.roll(x, 1)))
+                    cb_area = 0.5 * np.abs(np.dot(xs, np.roll(ys, 1)) - np.dot(ys, np.roll(xs, 1)))
 
                     G_n1_id, G_n2_id = G_edge[0], G_edge[1]
                     G_n1_x, G_n2_x = self.g1.nodes[G_n1_id][0], self.g1.nodes[G_n2_id][0]

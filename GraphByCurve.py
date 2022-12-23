@@ -57,7 +57,7 @@ class GraphByCurve:
     def buildFreeSpace(self, epsilon):
         self.__freespace = FreeSpace(self.__sigma_G, self.__sigma_C, epsilon)
 
-    def calculateArea(self, epsilon):
+    def calculateArea(self):
         self.__freespace.calculateArea()
         return self.__freespace.free_space_area
 

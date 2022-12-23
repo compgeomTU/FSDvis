@@ -43,9 +43,10 @@ if __name__ == "__main__":
     if '-a' in sys.argv:
         index = sys.argv.index('-a') + 1
         epsilon = float(sys.argv[index])
+        logging.info(f"Epsilon: {epsilon}")
         ctg.buildFreeSpace(epsilon)
-        area = ctg.calculateArea(epsilon)
-        print("Free Space Area: ", area)
+        area = ctg.calculateArea()
+        print("Free Space Area:", area)
 
     if '-e' in sys.argv:
         index = sys.argv.index('-e') + 1
@@ -54,5 +55,6 @@ if __name__ == "__main__":
         ctg.buildCells()
         ctg.buildFreeSpace(epsilon)
         ctg.plotFreeSpace(figure_filename)
-    else:
+
+    if '-p' in sys.argv:
         ctg.plot(figure_filename)
