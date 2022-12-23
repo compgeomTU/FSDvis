@@ -27,14 +27,14 @@ class FreeSpaceGraph:
         logging.info("Horizontal: vertices from H, edges from G")
         for v in self.g2.nodes.keys():
             for e in self.g1.edges.keys():
-                self.cell_boundaries[(g2, v, g1, e)] = CellBoundary(g2, v, g1, e, self.e)
-                logging.info("v: " + str(v) + " e: " + str(e) + " mycb: " + str(self.cell_boundaries[(g2, v, g1, e)]))
+                self.cell_boundaries[("g2", v, "g1", e)] = CellBoundary(g2, v, g1, e, self.e)
+                logging.info("v: " + str(v) + " e: " + str(e) + " mycb: " + str(self.cell_boundaries[("g2", v, "g1", e)]))
         # Verticle boundaries
         logging.info("Vertical: vertices from G, edges from H")
         for v in self.g1.nodes.keys():
             for e in self.g2.edges.keys():
-                self.cell_boundaries[(g1, v, g2, e)] = CellBoundary(g1, v, g2, e, self.e)
-                logging.info("v: " + str(v) + " e: " + str(e) + " mycb: " + str(self.cell_boundaries[(g1, v, g2, e)]))
+                self.cell_boundaries[("g1", v, "g2", e)] = CellBoundary(g1, v, g2, e, self.e)
+                logging.info("v: " + str(v) + " e: " + str(e) + " mycb: " + str(self.cell_boundaries[("g1", v, "g2", e)]))
 
     def print_cbs(self):
         print("-- Cell Boundaries --\n", print(self.cell_boundaries), "\n")

@@ -57,6 +57,10 @@ class GraphByCurve:
     def buildFreeSpace(self, epsilon):
         self.__freespace = FreeSpace(self.__sigma_G, self.__sigma_C, epsilon)
 
+    def calculateArea(self, epsilon):
+        self.__freespace.calculateArea()
+        return self.__freespace.free_space_area
+
     def plotFreeSpace(self, figue_filename=None):
         ax = plt.gca(projection = '3d')
         ax.grid(False)
@@ -64,6 +68,8 @@ class GraphByCurve:
 
         for ids, cell in self.__cells.cells.items():
             ax.plot_surface(cell.x_proj, cell.y_proj, cell.z_proj, alpha=0.25, color='lightgray', edgecolor ='black')
+
+        self.__freespace.build_cell_boundaries_3D()
 
         for cell_cb in self.__freespace.cell_boundaries_3D:
             verticies = [list(zip(cell_cb[0], cell_cb[1], cell_cb[2]))]
