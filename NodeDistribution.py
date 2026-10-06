@@ -1,5 +1,5 @@
 
-from traversalDistance.Graph import Graph
+from Graph import Graph
 from Curve import Curve
 
 def graph_node_distribution(graph, n_distributions):
@@ -61,15 +61,10 @@ def curve_node_distribution(curve, n_distributions):
 
         # adding nodes across old edge for n_distributions:
         for i in range(1, n_distributions):
-            #if edge_id == 0 and i == 0: continue
             sigma_curve.addNode(node_id_idx, x(i), y(i))
             sigma_curve.connectTwoNodes(edge_id_idx, node_id_idx-1, node_id_idx)
             node_id_idx += 1;
             edge_id_idx += 1;
-
-    # adding last edge and node to new graph
-    #sigma_curve.addNode(node_id_idx, curve.nodes[node_id_idx][0], curve.nodes[node_id_idx][1])
-    #sigma_curve.connectTwoNodes(edge_id_idx, node_id_idx-1, node_id_idx)
 
     sigma_curve.compute_vertex_dists()
 

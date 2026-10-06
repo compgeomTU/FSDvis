@@ -11,7 +11,7 @@
 import math, logging
 from collections import OrderedDict
 
-from traversalDistance.Graph import Graph
+from Graph import Graph
 
 class Curve(Graph):
     vertex_dists: list

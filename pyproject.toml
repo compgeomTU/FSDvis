@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fsdvis"
+version = "1.2.0"
+description = "Interactive graph-by-curve free-space visualizer"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = [
+  "numpy>=1.23",
+  "matplotlib>=3.6",
+]
+
+[project.scripts]
+fsdvis = "main:main"
+
+[tool.setuptools]
+py-modules = [
+  "Cells",
+  "Curve",
+  "FreeSpace",
+  "Graph",
+  "GraphByCurve",
+  "NodeDistribution",
+  "main",
+]
